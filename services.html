@@ -150,6 +150,38 @@
 <a href="#top" class="px-3 py-1 rounded-lg border hover:bg-gray-50">Back to top ↑</a>
 </div>
 </footer>
-<script>    // Year    document.getElementById('year').textContent = new Date().getFullYear();    // Mobile menu toggle    const mobileBtn = document.getElementById('mobileMenuBtn');    const mobileMenu = document.getElementById('mobileMenu');    const mobileBack = document.getElementById('mobileMenuBack');    function closeMobile(){ mobileMenu.classList.add('hidden'); mobileBtn.setAttribute('aria-expanded','false'); }    function openMobile(){ mobileMenu.classList.remove('hidden'); mobileBtn.setAttribute('aria-expanded','true'); }    mobileBtn?.addEventListener('click',()=>{ mobileMenu.classList.contains('hidden') ? openMobile() : closeMobile(); });    mobileBack?.addEventListener('click', closeMobile);    // Header state: force light header for internal pages    const header = document.getElementById('siteHeader');    header.classList.add('scrolled');    // Animate on scroll    const io = new IntersectionObserver(entries => entries.forEach(e=>{      if(e.isIntersecting) e.target.classList.add('show');    }), {rootMargin:'0px 0px -10% 0px', threshold:.1});    document.querySelectorAll('.card, .reveal').forEach(el=>io.observe(el));    // Search overlay handled by assets/site.js    // (Cursor glow removed per request)  </script>
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Mobile menu toggle (standardized)
+  const mobileBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileBack = document.getElementById('mobileMenuBack');
+  function toggleMobile(open){
+    if(!mobileMenu) return;
+    const show = open ?? mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden', !show);
+    mobileMenu.setAttribute('aria-hidden', String(!show));
+    if (mobileBtn) mobileBtn.setAttribute('aria-expanded', String(show));
+    document.body.classList.toggle('overflow-hidden', show);
+  }
+  mobileBtn && mobileBtn.addEventListener('click', ()=> toggleMobile());
+  mobileBack && mobileBack.addEventListener('click', ()=> toggleMobile(false));
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') toggleMobile(false); });
+
+  // Header state: force light header for internal pages
+  const header = document.getElementById('siteHeader');
+  header.classList.add('scrolled');
+
+  // Animate on scroll
+  const io = new IntersectionObserver(entries => entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('show');
+  }), {rootMargin:'0px 0px -10% 0px', threshold:.1});
+  document.querySelectorAll('.card, .reveal').forEach(el=>io.observe(el));
+
+  // Search overlay handled by assets/site.js
+  // (Cursor glow removed per request)
+</script>
 </body>
 </html>
