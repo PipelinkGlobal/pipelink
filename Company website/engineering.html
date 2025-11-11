@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Engineering – Pipelink Global Trading</title>
+
+  <link rel="icon" href="images/pipelink-icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="images/pipelink-icon.png" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Site assets -->
+  <link rel="stylesheet" href="assets/site.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{ --pl-navy: rgba(8,14,4,1); --pl-blue-600: rgba(62,156,254,1); --pl-white:#ffffff; }
+    html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+    body{font-family:'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial; font-size:18px; line-height:1.7}
+    .container{max-width:1280px;margin-inline:auto}
+    .card{background:#fff;border:1px solid rgba(15,23,42,.08);border-radius:1rem;box-shadow:0 8px 24px rgba(2,6,23,.06)}
+    .section-title{font-weight:800;letter-spacing:.1px}
+    .section-title::after{content:"";display:block;width:92px;height:3px;margin-top:.65rem;background:linear-gradient(90deg,#2563eb,#60a5fa)}
+    a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
+
+    /* Search overlay */
+    #searchOverlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(3px);display:none;pointer-events:none}
+    #searchOverlay.open{display:block;pointer-events:auto}
+    .search-panel{background:#fff;border:1px solid #e5e7eb;border-radius:1rem;box-shadow:0 8px 24px rgba(2,6,23,.08);overflow:hidden}
+    .search-row{display:flex;align-items:center;gap:.5rem;padding:.5rem .5rem .5rem .75rem;border-bottom:1px solid #e5e7eb}
+    .search-input{flex:1;padding:.6rem .75rem;border:1px solid #e5e7eb;border-radius:.6rem}
+    .search-results a:hover{background:#f8fafc}
+
+    /* Header states */
+    #siteHeader{transition: background-color .25s, border-color .25s, color .25s, box-shadow .25s}
+    #siteHeader.on-hero{background: var(--pl-navy); color:#fff}
+    #siteHeader.on-hero .brand, #siteHeader.on-hero .nav-link{color:#fff}
+    #siteHeader.on-hero #openSearch{color:#e5e7eb; border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.08)}
+    #siteHeader.on-hero #openSearch:hover{background: rgba(255,255,255,.16)}
+    #siteHeader.scrolled{background:rgba(255,255,255,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid #e5e7eb;box-shadow:0 6px 18px rgba(2,6,23,.08)}
+
+    /* Reveal */
+    .reveal{opacity:0;transform:translateY(16px) scale(.98);transition:opacity .6s ease,transform .6s ease}
+    .reveal.show{opacity:1;transform:none}
+    .reveal[data-delay="1"]{transition-delay:.08s}
+    .reveal[data-delay="2"]{transition-delay:.16s}
+    .reveal[data-delay="3"]{transition-delay:.24s}
+
+    
+
+    /* Image zoom (lightbox) */
+    #imgLightbox{position:fixed;inset:0;display:none;z-index:70;background:rgba(2,6,23,.85);backdrop-filter:saturate(120%) blur(2px)}
+    #imgLightbox.open{display:flex}
+    #imgLightbox .content{max-width:min(1100px,92vw);max-height:min(92vh,1200px);margin:auto;position:relative}
+    #imgLightbox img{display:block;max-width:100%;max-height:100%;border-radius:.75rem;box-shadow:0 20px 60px rgba(0,0,0,.45);transform:scale(.985);opacity:.96;transition:transform .18s ease, opacity .18s ease}
+    #imgLightbox.open img{transform:scale(1);opacity:1}
+    #imgLightbox .close{position:absolute;top:-44px;right:0;background:rgba(255,255,255,.92);border:1px solid rgba(2,6,23,.08);border-radius:.75rem;padding:.35rem .6rem;font-weight:600}
+    #imgLightbox .close:hover{background:#fff}
+    .zoomable{cursor:zoom-in}
+  </style>
+  <script defer src="assets/site.js"></script>
+</head>
+
+<body class="text-slate-800 bg-white text-[18px] leading-7">
+  <!-- Header -->
+  <header id="siteHeader" class="sticky top-0 z-50 on-hero">
+    <div class="container px-4">
+      <div class="h-16 flex items-center gap-4">
+        <a href="Index.html" class="flex items-center gap-3 shrink-0">
+          <img src="images/pipelink-icon.png" alt="Pipelink icon" class="w-9 h-9 rounded-full ring-2 ring-blue-500/30" />
+          <span class="brand font-semibold whitespace-nowrap">Pipelink Global Trading</span>
+        </a>
+        <button id="mobileMenuBtn" class="md:hidden ms-auto px-3 py-1.5 rounded-lg border text-sm" aria-controls="mobileMenu" aria-expanded="false">Menu</button>
+        <nav class="hidden md:flex items-center gap-6 text-sm ms-auto">
+          <a href="Index.html" class="nav-link">Home</a>
+          <div class="nav-group">
+            <a href="about.html" class="nav-link">About</a>
+            <div class="nav-panel" role="menu" aria-label="About submenu">
+              <a href="about.html#about" class="block px-3 py-2 rounded hover:bg-gray-50">About Us</a>
+              <a href="about.html#locations" class="block px-3 py-2 rounded hover:bg-gray-50">Our Location</a>
+              <a href="about.html#value" class="block px-3 py-2 rounded hover:bg-gray-50">Our Value</a>
+              <a href="about.html#identity" class="block px-3 py-2 rounded hover:bg-gray-50">Our Identity</a>
+            </div>
+          </div>
+          <div class="nav-group">
+            <a href="engineering.html" class="nav-link">Engineering</a>
+            <div class="nav-panel" role="menu" aria-label="Engineering submenu">
+              <a href="#segments" class="block px-3 py-2 rounded hover:bg-gray-50">Business</a>
+              <a href="#products" class="block px-3 py-2 rounded hover:bg-gray-50">Our Products</a>
+            </div>
+          </div>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="contact.html" class="contact-cta">Contact</a>
+          <button id="openSearch" class="px-3 py-1.5 rounded-lg border" aria-label="Open search">🔎</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobileMenu" class="fixed inset-0 z-[55] hidden" aria-hidden="true">
+    <div id="mobileMenuBack" class="absolute inset-0 bg-slate-900/40" tabindex="-1"></div>
+    <div class="absolute top-16 left-0 right-0 bg-white border-b shadow-lg">
+      <div class="container px-4 py-3">
+        <nav class="grid gap-2 text-sm" aria-label="Mobile">
+          <a href="Index.html" class="px-2 py-2 rounded hover:bg-gray-50">Home</a>
+          <a href="about.html" class="px-2 py-2 rounded hover:bg-gray-50">About</a>
+          <div class="ms-3">
+            <a href="about.html#about" class="block px-2 py-1 text-gray-600">Our Story</a>
+            <a href="about.html#locations" class="block px-2 py-1 text-gray-600">Our Location</a>
+            <a href="about.html#value" class="block px-2 py-1 text-gray-600">Our Value</a>
+            <a href="about.html#identity" class="block px-2 py-1 text-gray-600">Our Identity</a>
+          </div>
+          <a href="#segments" class="px-2 py-2 rounded hover:bg-gray-50">Engineering</a>
+          <div class="ms-3">
+            <a href="#segments" class="block px-2 py-1 text-gray-600">Business</a>
+            <a href="#products" class="block px-2 py-1 text-gray-600">Our Products</a>
+          </div>
+          <a href="services.html" class="px-2 py-2 rounded hover:bg-gray-50">Services</a>
+          <a href="contact.html" class="px-2 py-2 rounded bg-blue-600 text-white text-center">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <main id="top">
+    <!-- Page Hero -->
+    <section id="hero" class="relative overflow-hidden text-white" style="background:linear-gradient(180deg,#021c3d,#3e9cfe)">
+      <div class="container px-6 py-14">
+        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Engineering</h1>
+        <p class="text-white/90 mt-2 reveal show" style="transition-delay: 0ms;">Technical capabilities and segment coverage.</p>
+      </div>
+      <div id="hero-sentinel" class="absolute bottom-0 left-0 right-0 h-[1px]"></div>
+    </section>
+    <!-- Business Segments -->
+    <section id="segments" class="py-20 bg-white">
+      <div class="container max-w-7xl mx-auto px-6">
+        <h2 class="section-title text-3xl md:text-4xl">Business Segments</h2>
+
+        <div class="mt-10 grid lg:grid-cols-2 gap-8">
+          <!-- Segment I -->
+          <div class="card p-8 reveal" data-delay="1">
+            <h3 class="font-semibold text-xl">Business Segment I - Markets That Accept China Origin</h3>
+
+            <div class="mt-4 overflow-auto">
+              <table class="min-w-full text-[15px] border">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th class="px-3 py-2 text-left border">Product Category</th>
+                    <th class="px-3 py-2 text-left border">Standards</th>
+                    <th class="px-3 py-2 text-left border">Common Applications</th>
+                  </tr>
+                </thead>
+                <tbody class="text-slate-700">
+                  <tr>
+                    <td class="px-3 py-2 border">OCTG Casing &amp; Tubing</td>
+                    <td class="px-3 py-2 border">API 5CT / API 5B</td>
+                    <td class="px-3 py-2 border">Drilling, completion, production &amp; workover</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 border">Mechanical / Structural</td>
+                    <td class="px-3 py-2 border">GB / ASTM / EN</td>
+                    <td class="px-3 py-2 border">Offshore structures, equipment fabrication, load-bearing</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 border">Line Pipe</td>
+                    <td class="px-3 py-2 border">API 5L / ISO 3183</td>
+                    <td class="px-3 py-2 border">Oil &amp; gas gathering and transmission</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="mt-4 font-semibold">Strategic Mill Partners</p>
+            <p class="text-sm text-slate-600">Baotou • Hengyang Valin • Dalipal • Fengbao • TPCO</p>
+
+            <ul class="list-disc ms-5 mt-3 text-[15px] text-slate-700">
+              <li>Reliable production capacity &amp; controlled delivery</li>
+              <li>Full steel grade &amp; specification coverage</li>
+              <li>Strong QA documentation &amp; certifications</li>
+              <li>Superior landed cost competitiveness</li>
+            </ul>
+          </div>
+
+          <!-- Segment II -->
+          <div class="card p-8 reveal" data-delay="2">
+            <h3 class="font-semibold text-xl">Business Segment II - Origin-Compliant via Southeast Asia</h3>
+
+            <p class="mt-3 text-[15px] text-slate-700">
+              Upgradable mother pipes (East Asia) • Heat treatment &amp; premium threading (SEA) • SEA COO • Compliant entry into restricted markets.
+            </p>
+
+            <div class="mt-4 overflow-auto">
+              <table class="min-w-full text-[15px] border">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th class="px-3 py-2 text-left border">Process</th>
+                    <th class="px-3 py-2 text-left border">Technical Capability</th>
+                  </tr>
+                </thead>
+                <tbody class="text-slate-700">
+                  <tr>
+                    <td class="px-3 py-2 border">Heat Treatment (Q&amp;T / Normalize / SR)</td>
+                    <td class="px-3 py-2 border">Controls strength, toughness, fatigue &amp; corrosion resistance</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 border">Premium Connection Threading</td>
+                    <td class="px-3 py-2 border">PL-series, PH-series, compatible metal-to-metal seals</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 border">Inspection &amp; Validation</td>
+                    <td class="px-3 py-2 border">NDT/EMI, torque &amp; seal testing, hydrostatic; 3rd-party witnessable</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 border">Traceability &amp; Dossier</td>
+                    <td class="px-3 py-2 border">Material origin • processing logs • QA data • COO • shipping dossier</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4 mt-4">
+              <div class="rounded-xl border p-3 bg-white">
+                <span class="font-semibold">Deliverable Range:</span> 2-3/8" to 5-1/2"
+              </div>
+              <div class="rounded-xl border p-3 bg-white">
+                <span class="font-semibold">Threading Capability:</span> 2-3/8" to 20"
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Interstitial: Our Products (anchor target) -->
+    <span id="products" class="block -mt-24 pt-24" aria-hidden="true"></span>
+    <section class="py-6">
+      <div class="container max-w-7xl mx-auto px-6">
+        <h2 class="section-title text-3xl md:text-4xl">Our Products
+</h2>
+      </div>
+    </section>
+     <div class="container max-w-7xl mx-auto px-6 pt-10"><h2 class="section-title text-3xl md:text-4xl">OCTG</h2></div>
+    
+    <!-- Engineering (PL6 & PL8) -->
+    <section id="engineering" class="py-20 bg-white">
+      <div class="container max-w-7xl mx-auto px-6">
+        <div class="card p-8 md:p-10 reveal">
+          <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-10">PL6 &amp; PL8 Premium Connection</h3>
+          <div class="grid md:grid-cols-12 gap-10 items-center">
+            <figure class="md:col-span-5 bg-white rounded-xl overflow-hidden border shadow-sm p-4 flex items-center justify-center reveal" data-delay="1">
+              <img src="images/PL6-Connection.png" alt="PL6 Premium Connection" class="block w-full max-h-[32rem] object-contain" loading="lazy">
+            </figure>
+            <div class="md:col-span-7 text-[16px] leading-relaxed text-slate-700 reveal" data-delay="2">
+              <p class="mb-4">The PL Two-Step Integral Premium Connection (PL-6 / PL-8) is engineered for reliable makeup, field-service efficiency, and high-performance downhole integrity. Featuring a metal-to-metal gas-tight seal and a low-stress thread profile, the PL-6/8 minimizes galling risk while delivering full 100% ratings in tension, compression, and both internal and external pressure.</p>
+              <p class="mb-4">This connection is particularly suited for unconventional applications requiring post-fracturing clean-out or drilling through cement and debris. It provides superior seal reliability and structural toughness in deep, high-pressure gas wells, high-intensity fracturing operations, and long-term production strings.</p>
+              <p class='mb-4'>Additionally, we can supply custom extended upset lengths, enabling multiple re-cuts (up to two re-head operations) for extended service life — delivering greater operational flexibility and lower cost per well over the full lifecycle.</p>
+              <p>The PL system is available in two sizes — PL-6 and PL-8 — offering proven performance across a wide range of completion and production environments.</p>
+            </div>
+          </div>
+
+          <div class="mt-12">
+            <h4 class="text-2xl font-bold mb-4 text-center">Performance &amp; Design Highlights</h4>
+            <div class="overflow-auto reveal" data-delay="1">
+              <table class="min-w-full border text-[15px] md:text-[16px] leading-normal">
+                <thead class="bg-gray-100 text-slate-800 font-semibold">
+                  <tr>
+                    <th class="px-4 py-3 border text-left">Feature</th>
+                    <th class="px-4 py-3 border text-left">PL-6 / PL-8 Advantage</th>
+                  </tr>
+                </thead>
+                <tbody class="text-slate-700">
+                  <tr><td class="px-4 py-3 border">Thread Form</td><td class="px-4 py-3 border">Two-step integral, low-stress, galling-resistant</td></tr>
+                  <tr><td class="px-4 py-3 border">Seal Type</td><td class="px-4 py-3 border">Metal-to-metal, gas-tight seal</td></tr>
+                  <tr><td class="px-4 py-3 border">Ratings</td><td class="px-4 py-3 border">100% tension / compression / internal &amp; external pressure</td></tr>
+                  <tr><td class="px-4 py-3 border">Field Handling</td><td class="px-4 py-3 border">Simple make-up, repeatable sealing, low galling risk</td></tr>
+                  <tr><td class="px-4 py-3 border">Best Use Cases</td><td class="px-4 py-3 border">HP gas wells, frac programs, debris &amp; cement drill-outs</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h4 class="text-2xl font-bold text-center mt-14 mb-6">Technical Data Sheets</h4>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <figure class="text-center group reveal" data-delay="1">
+              <img src="images/PL6-Data-Sheet-1.png" alt="PL6 Data Sheet (Page 1)" class="rounded-lg border shadow-sm bg-white max-h-[28rem] w-full object-contain zoomable" loading="lazy">
+              <figcaption class="mt-3 text-sm font-semibold text-slate-700">PL6 - Data Sheet (Page 1)</figcaption>
+            </figure>
+            <figure class="text-center group reveal" data-delay="2">
+              <img src="images/PL6-Data-Sheet-2.png" alt="PL6 Data Sheet (Page 2)" class="rounded-lg border shadow-sm bg-white max-h-[28rem] w-full object-contain zoomable" loading="lazy">
+              <figcaption class="mt-3 text-sm font-semibold text-slate-700">PL6 - Data Sheet (Page 2)</figcaption>
+            </figure>
+            <figure class="text-center group reveal" data-delay="3">
+              <img src="images/PL8-Data-Sheet.png" alt="PL8 Data Sheet" class="rounded-lg border shadow-sm bg-white max-h-[28rem] w-full object-contain zoomable" loading="lazy">
+              <figcaption class="mt-3 text-sm font-semibold text-slate-700">PL8 - Data Sheet</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    
+    <!-- OCTG -->
+    <section id="octg" class="py-20 bg-white">
+      <div class="container max-w-7xl mx-auto px-6">
+        <div class="card p-8 md:p-10 reveal">
+          <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-8 text-center">OCTG - Casing, Tubing &amp; Accessories</h3>
+          <div class="grid md:grid-cols-12 gap-10 items-center">
+            <figure class="md:col-span-5 bg-white rounded-xl overflow-hidden border shadow-sm p-4 flex items-center justify-center">
+              <img src="images/octg.jpg" alt="OCTG Casing &amp; Tubing" class="block w-full max-h-[28rem] object-cover" loading="lazy">
+            </figure>
+            <div class="md:col-span-7 text-slate-700 leading-relaxed">
+              <ul class="space-y-2 text-[16px]">
+                <li><strong>Product:</strong> Oil Country Tubular Goods (OCTG)</li>
+                <li><strong>Standard:</strong> API 5CT</li>
+                <li><strong>Connections:</strong> API (STC/LTC/BTC) &amp; Premium (PL-6/PL-8)</li>
+                <li><strong>Dimensions:</strong> 1/2" - 24"</li>
+                <li><strong>Lengths:</strong> Single Random (4-7m) and Double Random (8-14m)</li>
+                <li><strong>Grades Available:</strong> J55, K55, L80-1, N80, N80Q, C90, T95, P110, Q125</li>
+                <li><strong>Surface:</strong> Mill varnish / Black</li>
+                <li><strong>Certification:</strong> 3.1 per EN 10204</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+     <div class="container max-w-7xl mx-auto px-6 pt-10">    <h2 class="section-title text-3xl md:text-4xl">Linepipe/Mechanical structure pipe</h2></div>
+
+    <!-- Linepipe -->
+    <section id="linepipe" class="py-20 bg-white">
+      <div class="container max-w-7xl mx-auto px-6">
+        <div class="card p-8 md:p-10 reveal">
+          <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-8 text-center">Seamless Carbon Steel Linepipe</h3>
+          <div class="grid md:grid-cols-12 gap-10 items-center">
+            <figure class="md:col-span-5 bg-white rounded-xl overflow-hidden border shadow-sm p-4 flex items-center justify-center">
+              <img src="images/cst.jpg" alt="Seamless Carbon Steel Linepipe" class="block w-full max-h-[28rem] object-contain" loading="lazy">
+            </figure>
+            <div class="md:col-span-7 text-slate-700 leading-relaxed">
+              <ul class="space-y-2 text-[16px]">
+                <li><strong>Product:</strong> Seamless carbon steel tubes for process and linepipe</li>
+                <li><strong>Standard:</strong> API 5L, ASTM A106, EN10216, ASTM A333 (low temp)</li>
+                <li><strong>Dimensions:</strong> 1/2" - 24"</li>
+                <li><strong>Lengths:</strong> Single (4-7m) and Double Random (8-14m)</li>
+                <li><strong>Delivery Condition:</strong> Bevelled ends for O.D. &gt; 60.3 mm</li>
+                <li><strong>Materials:</strong> Gr. B, X52, A106 Gr. C, P265GH, Gr. 6 LT45, P355 (low temp)</li>
+                <li><strong>Surface:</strong> Mill varnish</li>
+                <li><strong>Certification:</strong> 3.1 per EN 10204</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Mechanical / Structural -->
+    <section id="mech-steel" class="py-20 bg-white">
+      <div class="container max-w-7xl mx-auto px-6">
+        <div class="card p-8 md:p-10 reveal">
+          <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-8 text-center">Seamless Carbon Steel Tubes (Mechanical / Structural / Pressure)</h3>
+          <div class="grid md:grid-cols-12 gap-10 items-center">
+            <figure class="md:col-span-5 bg-white rounded-xl overflow-hidden border shadow-sm p-4 flex items-center justify-center">
+              <img src="images/scst.png" alt="Seamless Carbon Steel Tubes" class="block w-full max-h-[28rem] object-contain" loading="lazy">
+            </figure>
+            <div class="md:col-span-7 text-slate-700 leading-relaxed text-[16px]">
+              <ul class="space-y-2">
+                <li><strong>Product:</strong> Seamless carbon steel tubes for mechanical engineering, construction &amp; pressure service</li>
+                <li><strong>Standards:</strong> EN 10297-1, EN 10210-1/2, EN 10216-1/3</li>
+                <li><strong>Dimensions:</strong> 10.2 – 1.6 mm • 660 – 100 mm</li>
+                <li><strong>Lengths:</strong> Single (4-7m), Double Random (8-14m)</li>
+                <li><strong>Materials:</strong> P355N TC1, S355J2H, E355 N</li>
+                <li><strong>Surface:</strong> Black, non-oiled</li>
+                <li><strong>Certification:</strong> 3.1 per EN 10204</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+     <div class="container max-w-7xl mx-auto px-6 pt-10"><h2 class="section-title text-3xl md:text-4xl">Seamless stainless pipe</h2></div>
+
+    <!-- Stainless (Cold Finished) -->
+    <section id="ssrt-cold" class="py-20">
+      <div class="container max-w-7xl mx-auto px-6">
+        <div class="card p-8 md:p-10 reveal">
+          <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-8 text-center">Seamless Stainless Round Tubes - Cold Finished</h3>
+          <div class="grid md:grid-cols-12 gap-10 items-center">
+            <figure class="md:col-span-5 bg-white rounded-xl overflow-hidden border shadow-sm p-4 flex items-center justify-center">
+              <img src="images/ssrt.png" alt="Seamless Stainless Round Tubes (Cold Finished)" class="block w-full max-h-[28rem] object-contain" loading="lazy">
+            </figure>
+            <div class="md:col-span-7 text-slate-700 leading-relaxed text-[16px]">
+              <ul class="space-y-2">
+                <li><strong>Product:</strong> Seamless stainless round tubes, cold-finished</li>
+                <li><strong>Standards:</strong> ASTM/ASME A/SA213, ASTM A269, EN 10216-5 TC1/TC2</li>
+                <li><strong>Dimensions:</strong> 6.35 – 0.89 mm • 139.7 – 4 mm (other on request)</li>
+                <li><strong>Lengths:</strong> 5-7m (custom fixed lengths available)</li>
+                <li><strong>Delivery:</strong> Bright annealed / Annealed &amp; Pickled / Polished (Grit 240)</li>
+                <li><strong>Material Nos.:</strong> 1.4301/1.4307, 1.4401/1.4404, 1.4541, 1.4571</li>
+                <li><strong>Equivalent Grades:</strong> TP304/304L, TP316/316L, TP321, TP316Ti</li>
+                <li><strong>Certification:</strong> 3.1 or 3.2 per EN 10204</li>
+                <li><strong>Origin:</strong> EU &amp; Non-EU</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stainless (Hot Finished) -->
+    <section id="ssrt-hot" class="py-20 bg-white">
+      <div class="container max-w-7xl mx-auto px-6">
+        <div class="card p-8 md:p-10 reveal">
+          <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-8 text-center">Seamless Stainless Round Tubes - Hot Finished</h3>
+          <div class="grid md:grid-cols-12 gap-10 items-center">
+            <figure class="md:col-span-5 bg-white rounded-xl overflow-hidden border shadow-sm p-4 flex items-center justify-center">
+              <img src="images/ssrth.png" alt="Seamless Stainless Round Tubes (Hot Finished)" class="block w-full max-h-[28rem] object-contain" loading="lazy">
+            </figure>
+            <div class="md:col-span-7 text-slate-700 leading-relaxed text-[16px]">
+              <ul class="space-y-2">
+                <li><strong>Product:</strong> Seamless stainless round tubes, hot-finished</li>
+                <li><strong>Standards:</strong> ASTM A312 / ASME SA269 / EN 10216-5 TC1/TC2</li>
+                <li><strong>Dimensions:</strong> 33.4 – 6.35 mm • 323.9 – 9.52 mm (other sizes on request)</li>
+                <li><strong>Lengths:</strong> 5-7m (special lengths optional)</li>
+                <li><strong>Delivery:</strong> Hot-finished, annealed &amp; pickled</li>
+                <li><strong>Material Nos.:</strong> 1.4301/1.407, 1.4401/1.4404, 1.4541, 1.4571</li>
+                <li><strong>Equivalent Grades:</strong> TP304/304L, TP316/316L, TP321, TP316Ti</li>
+                <li><strong>Certification:</strong> 3.1 or 3.2 per EN 10204</li>
+                <li><strong>Origin:</strong> EU &amp; Non-EU</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-10 border-t">
+    <div class="container px-6 text-sm text-gray-600 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="images/pipelink-icon.png" alt="" class="w-6 h-6 rounded" />
+        <span>&copy; <span id="year"></span> Pipelink Global Trading Pte. Ltd.</span>
+      </div>
+      <a href="#top" class="px-3 py-1 rounded-lg border hover:bg-gray-50">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <!-- Search overlay -->
+  <div id="searchOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="container px-6 pt-24">
+      <div class="mx-auto max-w-2xl search-panel">
+        <div class="search-row">
+          <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke-width="2"></circle><path d="M21 21l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+          <input id="siteSearch" class="search-input" placeholder="Search sections, topics, terms." />
+          <button id="closeSearch" type="button" class="px-2 py-1 text-sm rounded bg-gray-100 hover:bg-gray-200" aria-label="Close search">Close</button>
+        </div>
+        <div id="searchResults" class="search-results max-h-80 overflow-auto divide-y"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Lightbox -->
+  <div id="imgLightbox" role="dialog" aria-modal="true" aria-labelledby="imgLightboxTitle" aria-hidden="true">
+    <div class="content px-4">
+      <button class="close text-sm" id="imgLightboxClose" aria-label="Close image (Esc)">✕ Close</button>
+      <img id="imgLightboxImg" alt="" />
+      <p id="imgLightboxTitle" class="sr-only">Data sheet image preview</p>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Helpers ----------
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+    const on = (el, ev, fn, opts) => el && el.addEventListener(ev, fn, opts);
+
+    // Year
+    const yearEl = $('#year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const mobileBtn  = $('#mobileMenuBtn');
+    const mobileMenu = $('#mobileMenu');
+    const mobileBack = $('#mobileMenuBack');
+    function lockScroll(lock){ document.documentElement.classList.toggle('overflow-hidden', lock); document.body.classList.toggle('overflow-hidden', lock); }
+    function closeMobile(){ if(!mobileMenu) return; mobileMenu.classList.add('hidden'); mobileMenu.setAttribute('aria-hidden','true'); lockScroll(false); mobileBtn?.setAttribute('aria-expanded','false'); }
+    function openMobile(){ if(!mobileMenu) return; mobileMenu.classList.remove('hidden'); mobileMenu.setAttribute('aria-hidden','false'); lockScroll(true); mobileBtn?.setAttribute('aria-expanded','true'); }
+    on(mobileBtn,'click',()=>{ mobileMenu.classList.contains('hidden') ? openMobile() : closeMobile(); });
+    on(mobileBack,'click',closeMobile);
+    $$('#mobileMenu a').forEach(a=> on(a,'click',closeMobile));
+    on(document,'keydown',(e)=>{ if(e.key==='Escape') closeMobile(); });
+
+    // Smooth anchors
+    const header = $('#siteHeader');
+    const HEADER_OFFSET = () => (header?.offsetHeight || 0) + 8;
+    function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+    function smoothScrollTo(targetY, duration = 800){
+      const startY = window.scrollY || window.pageYOffset; const dist = targetY - startY; const start = performance.now();
+      function step(now){ const t=Math.min(1,(now-start)/duration); window.scrollTo(0,startY+dist*easeInOutCubic(t)); if(t<1) requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    }
+    $$('a[href^="#"]').forEach(a=>{
+      const href = a.getAttribute('href'); if(!href || href === '#') return;
+      on(a,'click', e=>{ const el = document.querySelector(href); if(!el) return; e.preventDefault(); const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET(); smoothScrollTo(top, 850); history.pushState(null,'',href); });
+    });
+
+    // Header mode (on-hero vs scrolled)
+    (function initHeaderMode(){
+      if(!header) return; const sentinel = $('#hero-sentinel') || $('#hero');
+      if(!sentinel){ header.classList.add('scrolled'); header.classList.remove('on-hero'); return; }
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          const onHero = entry.isIntersecting && entry.intersectionRatio > 0;
+          header.classList.toggle('on-hero', onHero);
+          header.classList.toggle('scrolled', !onHero);
+        });
+      },{ rootMargin:'-1px 0px 0px 0px', threshold:[0,0.01,1] });
+      io.observe(sentinel);
+    })();
+
+    // Animate on scroll (reveal)
+    const revealIO = new IntersectionObserver(
+      entries => entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('show'); revealIO.unobserve(e.target); }
+      }),
+      { rootMargin:'0px 0px -12% 0px', threshold:.12 }
+    );
+    $$('.card, .reveal').forEach(el=> revealIO.observe(el));
+
+        // Search overlay handled by assets/site.js
+// ---------- Image Lightbox (for PL6/PL8) ----------
+    const lb = $('#imgLightbox');
+    const lbImg = $('#imgLightboxImg');
+    const lbClose = $('#imgLightboxClose');
+
+    function openLightbox(src, alt=''){
+      if(!lb) return;
+      lbImg.src = src;
+      lbImg.alt = alt || 'Data sheet preview';
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+      lockScroll(true);
+      lbClose?.focus();
+      document.addEventListener('keydown', onLightboxKeydown);
+    }
+
+    function closeLightbox(){
+      if(!lb) return;
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden','true');
+      lbImg.removeAttribute('src');
+      lockScroll(false);
+      document.removeEventListener('keydown', onLightboxKeydown);
+    }
+
+    function onLightboxKeydown(e){
+      if(e.key === 'Escape') closeLightbox();
+    }
+
+    // Make target images zoomable
+    $$('#engineering img.zoomable').forEach(img=>{
+      on(img, 'click', ()=> openLightbox(img.currentSrc || img.src, img.alt));
+      const preload = new Image(); preload.src = img.currentSrc || img.src;
+    });
+
+    on(lb, 'click', (e)=>{ if(e.target === lb) closeLightbox(); });
+    on(lbClose, 'click', closeLightbox);
+  </script>
+</body>
+</html>
