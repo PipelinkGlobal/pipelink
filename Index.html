@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Pipelink Global Trading Pte. Ltd.</title>
+
+
+
+  <link rel="icon" href="images/pipelink-icon.png" type="image/png" />
+
+  <link rel="apple-touch-icon" href="images/pipelink-icon.png" />
+
+
+
+  <!-- Tailwind -->
+
+  <script src="https://cdn.tailwindcss.com"></script>  <link rel="stylesheet" href="assets/site.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+
+  <style>
+
+    /* Make closed overlays non-interactive */
+
+#searchOverlay{display:none; pointer-events:none;}
+
+#searchOverlay.open{display:block; pointer-events:auto;}
+
+
+
+
+/* Ensure the contact form card is above page content but below header */
+
+.contact-card{position:relative; z-index:40;}
+
+
+
+    :root{
+
+      --pl-navy:rgba(8,14,4,1); --pl-navy-2:#111827;
+
+      --pl-blue-800:#1e40af; --pl-blue-700:#1d4ed8; --pl-blue-600:#2563eb; --pl-blue-500:#3b82f6;
+
+      --pl-red:#ef4444; --pl-green:#22c55e;
+
+    }
+
+    html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+
+    body{font-family:'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, 'Apple Color Emoji','Segoe UI Emoji';font-size:18px;line-height:1.7}
+
+    html{scroll-behavior:smooth}
+
+    section{scroll-margin-top:88px}
+
+    .container{max-width:1280px;margin-inline:auto}
+
+
+
+    /* Cards & sections */
+
+    .card{background:#fff;border:1px solid rgba(15,23,42,.08);border-radius:1rem;box-shadow:0 8px 24px rgba(2,6,23,.06);transition:box-shadow .25s, transform .25s}
+
+    .card:hover{box-shadow:0 18px 36px rgba(2,6,23,.10);transform:translateY(-3px)}
+
+    .section-title{font-weight:800;letter-spacing:.1px}
+
+    .section-title::after{content:"";display:block;width:92px;height:3px;margin-top:.65rem;background:linear-gradient(90deg,var(--pl-blue-600),#60a5fa)}
+
+    /* Readability tweaks */
+
+    p{max-width:70ch}
+
+    .grid.gap-6{gap:1.75rem}
+
+    .grid.gap-8{gap:2.25rem}
+
+    .grid.gap-10{gap:2.75rem}
+
+    a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
+
+    a:hover:not(.nav-link){text-decoration:underline}
+
+    table{border-collapse:separate;border-spacing:0;border-radius:.75rem;overflow:hidden}
+
+    thead th{background:#f8fafc}
+
+    tbody tr:nth-child(odd){background:#fcfdff}
+
+    tbody tr:hover{background:#f1f5f9}
+
+    th,td{border-color:#e5e7eb}
+
+    .input{font-size:16px}
+
+    .input:focus{outline:none;border-color:var(--pl-blue-600);box-shadow:0 0 0 3px rgba(37,99,235,.18)}
+
+    .pin .label{font-weight:600;font-size:14px;backdrop-filter:saturate(180%) blur(4px)}
+
+    section + section{border-top:1px solid #eef2f7}
+
+
+
+    /* Reveal on scroll */
+
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+
+    .reveal.show{opacity:1;transform:none}
+
+
+
+    /* Header states */
+
+    #siteHeader{transition: background-color .25s, border-color .25s, color .25s, box-shadow .25s}
+
+    #siteHeader .nav-link{position:relative; text-decoration:none}
+
+    #siteHeader .nav-link:hover{ text-decoration:none }
+
+    #siteHeader .nav-link::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:transparent;transition:background .2s}
+
+    #siteHeader .nav-link:hover::after{background:currentColor}
+
+    /* Dropdown nav */
+
+    .nav-group{position:relative}
+
+    .nav-panel{position:absolute;left:0;top:100%;margin-top:.35rem; min-width:14rem;background:#fff;color:#0f172a;border:1px solid #e5e7eb;border-radius:.75rem;box-shadow:0 18px 44px rgba(2,6,23,.16);opacity:0;pointer-events:none;transform:translateY(4px);transition:opacity .15s ease,transform .15s ease;z-index:60}
+
+    \.nav-group:hover \.nav-panel,\.nav-group:focus-within \.nav-panel,\.nav-group.open \.nav-panel{opacity:1;pointer-events:auto;transform:none}
+
+    .nav-panel a{display:block;padding:.6rem .85rem;border-bottom:1px solid #f1f5f9}
+
+    .nav-panel a:last-child{border-bottom:none}
+
+
+
+    /* DARK on hero */
+
+    #siteHeader.on-hero{
+
+      background: var(--pl-navy);
+
+      border-color: transparent;
+
+      color:#fff;
+
+    }
+
+    #siteHeader.on-hero .brand, #siteHeader.on-hero .nav-link{color:#fff}
+
+    #siteHeader.on-hero #openSearch, #siteHeader.on-hero #langBtn{
+
+      color:#e5e7eb; border-color: rgba(255,255,255,.35);
+
+      background: rgba(255,255,255,.08);
+
+    }
+
+    #siteHeader.on-hero #openSearch:hover, #siteHeader.on-hero #langBtn:hover{background: rgba(255,255,255,.16);}
+
+
+
+    /* WHITE after hero */
+
+    #siteHeader.scrolled{
+
+      background:rgba(255,255,255,.86);
+
+      backdrop-filter:saturate(140%) blur(8px);
+
+      -webkit-backdrop-filter:saturate(140%) blur(8px);
+
+      border-bottom:1px solid #e5e7eb;
+
+      box-shadow:0 6px 18px rgba(2,6,23,.08);
+
+      color:inherit;
+
+    }
+
+
+
+    /* Inputs */
+
+    .input{width:100%;border-radius:.7rem;border:1px solid #d1d5db;padding:.7rem .85rem;background:#fff;color:#0f172a}
+
+    .input::placeholder{color:#94a3b8}
+
+    .input:focus{outline:none;border-color:var(--pl-blue-600);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+
+
+
+    /* Map pins + tooltip ABOVE pin */
+
+    #mapWrap{position:relative;overflow:hidden}
+
+    #pins{position:absolute;inset:0;pointer-events:none}
+
+    .pin{pointer-events:auto;position:absolute;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:9999px;border:2px solid #fff;background:var(--pl-red);transition:transform .15s, box-shadow .25s}
+
+    .pin:hover{transform:translate(-50%,-50%) scale(1.1);box-shadow:0 0 0 10px rgba(239,68,68,.15)}
+
+    .pin[data-type="hq"]{background:var(--pl-green)}
+
+    .pin .label{
+
+      position:absolute;left:50%;bottom:18px;transform:translate(-50%,-100%);
+
+      white-space:nowrap;background:var(--pl-navy);color:#fff;border-radius:.9rem;padding:.5rem .8rem;
+
+      font-size:13px;box-shadow:0 10px 28px rgba(2,6,23,.28);opacity:0;pointer-events:none;transition:opacity .18s, transform .18s;z-index:49
+
+    }
+
+    .pin:hover .label{opacity:1;transform:translate(-50%,-110%)}
+
+
+
+    /* Search overlay */
+
+    #searchOverlay{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(3px);display:none;pointer-events:none}
+
+    #searchOverlay.open{display:block;pointer-events:auto}
+
+    .search-panel{background:#fff;border-radius:1rem;box-shadow:0 30px 60px rgba(2,6,23,.25);overflow:hidden}
+
+    .search-input{border:none;outline:none;width:100%}
+
+    .search-row{display:flex;align-items:center;gap:.65rem;padding:.9rem 1rem;border-bottom:1px solid #e5e7eb}
+
+    .search-results a{display:block;padding:.8rem 1rem}
+
+    .search-results a:hover{background:#f8fafc}
+
+    .search-hit{background:linear-gradient(transparent 30%, #fff59d 30%, #fff59d 70%, transparent 70%)}
+
+
+
+    /* CTA / Contact surface */
+
+    .cta-blue{background:var(--pl-blue-600);color:#fff;border:1px solid var(--pl-blue-600)}
+
+    .cta-blue:hover{filter:brightness(1.05)}
+
+    .contact-surface{background:linear-gradient(180deg, rgba(2,28,61,1), rgba(62,156,254,1))}
+
+
+
+    /* Language menu (improved slider-style dropdown) */
+
+    #langWrap{position:relative}
+
+    #langBtn{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:.75rem;border:1px solid #d1d5db;background:#fff;color:#0f172a}
+
+    #siteHeader.on-hero #langBtn{background:rgba(255,255,255,.08);color:#e5e7eb;border-color:rgba(255,255,255,.35)}
+
+    #langMenu{
+
+      position:absolute;right:0;top:100%;
+
+      width:320px;background:#fff;color:#0f172a;border:1px solid #e5e7eb;border-radius:1rem;
+
+      box-shadow:0 18px 40px rgba(2,6,23,.22), 0 2px 10px rgba(2,6,23,.08);
+
+      padding:.5rem; display:block !important; z-index:60; overflow:hidden;
+
+      transition: opacity .15s ease, transform .15s ease;
+
+    }
+
+    #langMenu.open{display:block;animation:menuIn .15s ease-out}
+
+    #langBtn:focus{outline:none !important; box-shadow:none !important}
+
+    @keyframes menuIn{from{transform:translateY(-6px);opacity:0}to{transform:none;opacity:1}}
+
+    .lang-list{max-height:340px;overflow:auto;padding:.25rem}
+
+    .lang-item{
+
+      display:flex;align-items:center;justify-content:space-between;
+
+      width:100%; padding:.6rem .75rem; border-radius:.75rem; gap:.5rem;
+
+      transition:background .15s, outline .15s;
+
+    }
+
+    .lang-item:hover{background:#f8fafc}
+
+    .lang-item:focus{outline:2px solid #bfdbfe;outline-offset:0}
+
+    .lang-left{display:flex;align-items:center;gap:.6rem}
+
+    .lang-code{margin-left:auto;font-size:.78rem;color:#64748b}
+
+    .lang-check{display:none;margin-left:.5rem}
+
+    .lang-item.active{background:#eff6ff; outline:1px solid #bfdbfe}
+
+    .lang-item.active .lang-check{display:inline;color:var(--pl-blue-600)}
+
+
+
+    #langWrap{display:none !important}
+
+  </style>
+
+  <script defer src="assets/site.js"></script></head>
+
+
+
+<body class="text-slate-800 bg-white text-[18px] leading-7">
+
+  <!-- Header -->
+
+  <header id="siteHeader" class="sticky top-0 z-50 on-hero">
+    <div class="container px-4">
+
+      <div class="h-16 flex items-center gap-4">
+
+        <a href="Index.html" class="flex items-center gap-3 shrink-0">
+
+          <img src="images/pipelink-icon.png" alt="Pipelink icon" class="w-9 h-9 rounded-full ring-2 ring-blue-500/30" />
+
+          <span class="brand font-semibold whitespace-nowrap">Pipelink Global Trading</span>
+
+        </a>
+
+        <!-- Mobile menu button -->
+
+        <button id="mobileMenuBtn" class="md:hidden ms-auto px-3 py-1.5 rounded-lg border text-sm" aria-controls="mobileMenu" aria-expanded="false">Menu</button>
+
+
+
+                <nav class="hidden md:flex items-center gap-6 text-sm ms-auto">
+          <a href="Index.html" class="nav-link">Home</a>
+          <div class="nav-group">
+            <a href="about.html" class="nav-link">About</a>
+            <div class="nav-panel">
+              <a href="about.html#about">About Us</a>
+              <a href="about.html#locations">Our Location</a>
+              <a href="about.html#value">Our Value</a>
+              <a href="about.html#identity">Our Identity</a>
+            </div>
+          </div>
+          <div class="nav-group">
+            <a href="engineering.html" class="nav-link">Engineering</a>
+            <div class="nav-panel">
+              <a href="engineering.html#segments">Business</a>
+              <a href="engineering.html#products">Our Products</a>
+            </div>
+          </div>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="contact.html" class="contact-cta">Contact</a>
+          <button id="openSearch" class="px-3 py-1.5 rounded-lg border">🔎</button>
+        </nav>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- Mobile Menu Overlay -->
+
+  <div id="mobileMenu" class="fixed inset-0 z-[55] hidden" aria-hidden="true">
+    <div id="mobileMenuBack" class="absolute inset-0 bg-slate-900/40"></div>
+    <div class="absolute top-16 left-0 right-0 bg-white border-b shadow-lg">
+      <div class="container px-4 py-3">
+        <div class="grid gap-2 text-sm">
+          <a href="Index.html" class="px-2 py-2 rounded hover:bg-gray-50">Home</a>
+          <a href="about.html" class="px-2 py-2 rounded hover:bg-gray-50">About</a>
+          <div class="ms-3">
+            <a href="about.html#about" class="block px-2 py-1 text-gray-600">Our Story</a>
+            <a href="about.html#locations" class="block px-2 py-1 text-gray-600">Our Location</a>
+            <a href="about.html#value" class="block px-2 py-1 text-gray-600">Our Value</a>
+            <a href="about.html#identity" class="block px-2 py-1 text-gray-600">Our Identity</a>
+          </div>
+          <a href="engineering.html" class="px-2 py-2 rounded hover:bg-gray-50">Engineering</a>
+          <div class="ms-3">
+            <a href="engineering.html#segments" class="block px-2 py-1 text-gray-600">Business</a>
+            <a href="engineering.html#products" class="block px-2 py-1 text-gray-600">Our Products</a>
+          </div>
+          <a href="services.html" class="px-2 py-2 rounded hover:bg-gray-50">Services</a>
+          <a href="contact.html" class="px-2 py-2 rounded bg-blue-600 text-white text-center">Contact</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main id="top">
+  <script>
+    // Failsafe: ensure mobile menu opens even if other script errors occur
+    (function(){
+      const mobileBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const mobileBack = document.getElementById('mobileMenuBack');
+      if(!mobileBtn || !mobileMenu) return;
+      const lockScroll=(v)=>{ document.documentElement.classList.toggle('overflow-hidden', !!v); document.body.classList.toggle('overflow-hidden', !!v); };
+      const close=()=>{ mobileMenu.classList.add('hidden'); mobileMenu.setAttribute('aria-hidden','true'); mobileBtn.setAttribute('aria-expanded','false'); lockScroll(false); };
+      const open =()=>{ mobileMenu.classList.remove('hidden'); mobileMenu.setAttribute('aria-hidden','false'); mobileBtn.setAttribute('aria-expanded','true'); lockScroll(true); };
+      mobileBtn.addEventListener('click', ()=>{ mobileMenu.classList.contains('hidden') ? open() : close(); });
+      mobileBack && mobileBack.addEventListener('click', close);
+      mobileMenu.querySelectorAll('a').forEach(a=> a.addEventListener('click', close));
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
+    })();
+  </script>
+
+    <!-- Hero -->
+
+    <section id="hero" class="relative overflow-hidden contact-surface text-white">
+
+      <div class="container px-6 py-16 md:py-20">
+
+        <div class="grid md:grid-cols-[auto,1fr] gap-10 items-center">
+
+          <div class="mx-auto md:mx-0 w-44 md:w-56 aspect-square rounded-full bg-white shadow-xl ring-4 ring-white/40 grid place-items-center">
+
+            <img src="images/pipelink-logo.png" alt="Pipelink Logo" class="w-36 md:w-44 h-auto object-contain" />
+
+          </div>
+
+          <div>
+
+            <h1 class="text-3xl sm:text-5xl font-extrabold leading-[1.15] tracking-tight" data-i18n="hero_title">
+
+              Global steel pipe sourcing &amp; compliant delivery-done right.
+
+            </h1>
+
+            <p class="mt-4 text-white/95 max-w-2xl" data-i18n="hero_sub">
+
+              From mill to well: origin-compliant supply, premium threading, and full-traceability execution.
+
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+
+              <a href="services.html" class="px-5 py-2 rounded-lg bg-white/15 border border-white/25 hover:bg-white/25" data-i18n="cta_solutions">Explore services</a>
+
+              <a href="about.html" class="px-5 py-2 rounded-lg bg-white text-blue-700 hover:bg-gray-100" data-i18n="cta_about">About us</a>
+
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-3 text-sm">
+
+              <span class="px-3 py-1 rounded-full border border-white/60 bg-white/15">OCTG</span>
+
+              <span class="px-3 py-1 rounded-full border border-white/60 bg-white/15">PREMNIUM CONNECTION</span>
+
+              <span class="px-3 py-1 rounded-full border border-white/60 bg-white/15">MECHANICAL/STRUCTURAL PIPE</span>
+
+              <span class="px-3 py-1 rounded-full border border-white/60 bg-white/15">LINE PIPE</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="text-white">
+
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" class="block w-full">
+
+          <path d="M0,96 C240,128 480,0 720,24 C960,48 1200,132 1440,84 L1440,120 L0,120 Z" fill="currentColor" />
+
+        </svg>
+
+      </div>
+
+      <div id="hero-sentinel" class="absolute bottom-0 left-0 right-0 h-[1px]"></div>
+
+    </section>
+
+
+
+    <!-- WHO WE ARE (Home) -->
+
+    <section id="who" class="py-20 bg-white">
+
+      <div class="container px-6">
+
+        <h2 class="section-title text-3xl">Who We Are</h2>
+
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+
+          <div class="card p-6 reveal">
+
+            <h3 class="font-semibold text-lg">Solutions Partner</h3>
+
+            <p class="text-gray-700 text-[15px] mt-2">Short placeholder about your positioning and differentiators. You can edit this later.</p>
+
+          </div>
+
+          <div class="card p-6 reveal">
+
+            <h3 class="font-semibold text-lg">Compliance &amp; Traceability</h3>
+
+            <p class="text-gray-700 text-[15px] mt-2">SEA origin pathways and documentation control designed for restricted markets.</p>
+
+          </div>
+
+          <div class="card p-6 reveal">
+
+            <h3 class="font-semibold text-lg">Engineering Integrity</h3>
+
+            <p class="text-gray-700 text-[15px] mt-2">Premium connections and validated performance for demanding wells.</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Capabilities -->
+
+    <section id="capabilities" class="py-16 bg-gray-50">
+
+      <div class="container px-6">
+
+        <h2 class="section-title text-3xl">Capabilities</h2>
+
+        <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+          <div class="card p-6 reveal"><div class="text-3xl font-extrabold">10+</div><div class="text-gray-600">Mill partnerships</div></div>
+
+          <div class="card p-6 reveal"><div class="text-3xl font-extrabold">6</div><div class="text-gray-600">Process steps traced</div></div>
+
+          <div class="card p-6 reveal"><div class="text-3xl font-extrabold">100%</div><div class="text-gray-600">Seal rating verified</div></div>
+
+          <div class="card p-6 reveal"><div class="text-3xl font-extrabold">7</div><div class="text-gray-600">Regions supported</div></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Featured Products -->
+
+    <section id="featured" class="py-20 bg-white">
+
+      <div class="container px-6">
+
+        <h2 class="section-title text-3xl">Featured Products</h2>
+
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+
+          <a class="card p-6 block reveal" href="engineering.html#engineering"><h3 class="font-semibold text-lg">PL6 &amp; PL8 Connections</h3><p class="text-gray-600 text-[15px] mt-2">Two-step integral design with metal-to-metal seal.</p></a>
+
+          <a class="card p-6 block reveal" href="engineering.html#linepipe"><h3 class="font-semibold text-lg">Seamless Linepipe</h3><p class="text-gray-600 text-[15px] mt-2">API 5L, process and transmission service.</p></a>
+
+          <a class="card p-6 block reveal" href="engineering.html#octg"><h3 class="font-semibold text-lg">OCTG</h3><p class="text-gray-600 text-[15px] mt-2">Casing, tubing &amp; accessories, API 5CT.</p></a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Why Choose Us -->
+
+    <section id="why" class="py-16 bg-gray-50">
+
+      <div class="container px-6">
+
+        <h2 class="section-title text-3xl">Why Choose Us</h2>
+
+        <ul class="mt-6 grid gap-4 md:grid-cols-2">
+
+          <li class="card p-5 reveal">Origin-compliant supply paths for restricted markets</li>
+
+          <li class="card p-5 reveal">Premium threading and verification workflows</li>
+
+          <li class="card p-5 reveal">Documentation control and audit-ready dossiers</li>
+
+          <li class="card p-5 reveal">Reliable capacity with multi-region coverage</li>
+
+        </ul>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- CTA -->
+
+    <section id="cta" class="py-20 contact-surface text-white">
+
+      <div class="container px-6">
+
+        <div class="p-8 md:p-10 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm reveal">
+
+          <div class="md:flex items-center justify-between gap-6">
+
+            <div>
+
+              <h3 class="text-2xl font-bold">Looking to spec a tubular system?</h3>
+
+              <p class="text-white/90">We’ll help align sourcing, compliance, and performance.</p>
+
+            </div>
+
+            <a href="contact.html" class="mt-4 md:mt-0 inline-block px-5 py-2 rounded-lg bg-white text-blue-700 hover:bg-gray-100">Contact Us</a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- Home trimmed. Detailed content moved to About/Engineering/Services/Contact pages. -->
+
+  <footer class="py-10 border-t">
+
+    <div class="container px-6 text-sm text-gray-600 flex items-center justify-between">
+
+      <div class="flex items-center gap-3">
+
+        <img src="images/pipelink-icon.png" alt="" class="w-6 h-6 rounded" />
+
+        <span>© <span id="year"></span> Pipelink Global Trading Pte. Ltd.</span>
+
+      </div>
+
+      <a href="#top" class="px-3 py-1 rounded-lg border hover:bg-gray-50" data-i18n="back_top">Back to top ↑</a>
+
+    </div>
+
+  </footer>
+
+
+
+  <!-- Search overlay -->
+
+  <div id="searchOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+
+    <div class="container px-6 pt-24">
+
+      <div class="mx-auto max-w-2xl search-panel">
+
+        <div class="search-row">
+
+          <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+
+            <circle cx="11" cy="11" r="7" stroke-width="2"></circle><path d="M21 21l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path>
+
+          </svg>
+
+          <input id="siteSearch" class="search-input" placeholder="Search sections, topics, terms…" />
+
+          <button id="closeSearch" type="button" class="px-2 py-1 text-sm rounded bg-gray-100 hover:bg-gray-200" aria-label="Close search" data-i18n="close">Close</button>
+
+        </div>
+
+        <div id="searchResults" class="search-results max-h-80 overflow-auto divide-y"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <script>
+
+    /* Year */
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+
+
+    /* Smooth anchor with easing & header offset */
+
+    const header = document.getElementById('siteHeader');
+
+    const HEADER_OFFSET = () => header.offsetHeight + 8;
+
+    function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+
+    function smoothScrollTo(targetY, duration = 800){
+
+      const startY = window.scrollY;
+
+      const dist = targetY - startY;
+
+      const start = performance.now();
+
+      function step(now){
+
+        const t = Math.min(1, (now - start) / duration);
+
+        window.scrollTo(0, startY + dist * easeInOutCubic(t));
+
+        if (t < 1) requestAnimationFrame(step);
+
+      }
+
+      requestAnimationFrame(step);
+
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+
+      a.addEventListener('click', e=>{
+
+        const id = a.getAttribute('href'); const el = document.querySelector(id);
+
+        if (!el) return;
+
+        e.preventDefault();
+
+        const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET();
+
+        smoothScrollTo(top, 850); history.pushState(null, '', id);
+
+      });
+
+    });
+
+
+
+    /* Header color swap */
+
+    const hero = document.getElementById('hero');
+
+    const sentinel = document.getElementById('hero-sentinel');
+
+    function updateHeaderState(inHero){
+
+      header.classList.toggle('on-hero', inHero);
+
+      header.classList.toggle('scrolled', !inHero);
+
+    }
+
+    if ('IntersectionObserver' in window && hero && sentinel){
+
+      const ioHeader = new IntersectionObserver(entries=>{
+
+        entries.forEach(entry=>{ updateHeaderState(entry.isIntersecting); });
+
+      }, { rootMargin: `-${HEADER_OFFSET()}px 0px 0px 0px`, threshold: 0 });
+
+      ioHeader.observe(sentinel);
+
+    } else {
+
+      const fallback = () => {
+
+        const heroBottom = hero.getBoundingClientRect().bottom;
+
+        updateHeaderState(heroBottom > HEADER_OFFSET());
+
+      };
+
+      window.addEventListener('scroll', fallback, { passive:true });
+
+      window.addEventListener('resize', fallback);
+
+      fallback();
+
+    }
+
+
+
+    /* Reveal on scroll */
+
+    const io = new IntersectionObserver(es => es.forEach(e=>e.isIntersecting && e.target.classList.add('show')),
+
+      {rootMargin:'0px 0px -10% 0px', threshold:.1});
+
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+
+
+    /* Search overlay */
+
+    const overlay = document.getElementById('searchOverlay');
+
+    const openBtn = document.getElementById('openSearch');
+
+    const closeBtn = document.getElementById('closeSearch');
+
+    const input = document.getElementById('siteSearch');
+
+    const results = document.getElementById('searchResults');
+
+    function buildIndex(){
+
+      return Array.from(document.querySelectorAll('section[id]')).map(sec=>{
+
+        const title = sec.querySelector('h2, h3')?.textContent?.trim() || sec.id;
+
+        const text  = (sec.innerText || '').replace(/\s+/g,' ').trim();
+
+        return { id:'#'+sec.id, title, text };
+
+      });
+
+    }
+
+    const searchIndex = buildIndex();
+
+    function highlight(text, q){
+
+      const re = new RegExp('('+q.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&')+')','ig');
+
+      return text.replace(re, '<span class="search-hit">$1</span>');
+
+    }
+
+    function renderResults(matches, q){
+
+      results.innerHTML = matches.slice(0,8).map(m=>`
+
+        <a class="block px-4 py-3" href="${m.id}">
+
+          <div class="text-sm font-semibold">${m.title}</div>
+
+          <div class="text-xs text-gray-600">${highlight(m.snippet, q)}</div>
+
+        </a>
+
+      `).join('') || `<div class="p-4 text-sm text-gray-500" data-i18n="no_results">No results</div>`;
+
+      Array.from(results.querySelectorAll('a')).forEach(link=>{ link.addEventListener('click', () => closeSearch()); });
+
+    }
+
+    function openSearch(){ overlay.classList.add('open'); input.value=''; results.innerHTML=''; setTimeout(()=>input.focus(), 20); }
+
+    function closeSearch(){ overlay.classList.remove('open'); }
+
+    openBtn.addEventListener('click', openSearch);
+
+    closeBtn.addEventListener('click', closeSearch);
+
+    overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeSearch(); });
+
+    input.addEventListener('input', ()=>{
+
+      const q = input.value.trim(); if(!q){ results.innerHTML=''; return; }
+
+      const matches = searchIndex.map(it=>{
+
+        const i = it.text.toLowerCase().indexOf(q.toLowerCase()); if(i===-1) return null;
+
+        const s=Math.max(0,i-40), e=Math.min(it.text.length,i+q.length+80);
+
+        return { id:it.id, title:it.title, snippet: it.text.slice(s,e)+(e<it.text.length?'…':'') };
+
+      }).filter(Boolean);
+
+      renderResults(matches, q);
+
+    });
+
+
+
+    /* Map pins (guarded) */
+
+    const LOCATIONS = [
+
+      { name:'Headquarters - Singapore', left:76.5, top:50,  type:'hq' },
+
+      // Americas
+
+      { name:'America (USA)',           left:24.0, top:34.0 },
+
+      { name:'Canada',                  left:22.0, top:24.0 },
+
+      { name:'Colombia',                left:27.5, top:52.0 },
+
+      { name:'Brazil',                  left:33.0, top:63.0 },
+
+      // Europe / Africa
+
+      { name:'United Kingdom',          left:46.5, top:28.2 },
+
+      { name:'Germany',                 left:50.5, top:30.5 },
+
+      { name:'Italy',                   left:51.5, top:35.2 },
+
+      { name:'Ukraine',                 left:55.8, top:29.8 },
+
+      { name:'Egypt',                   left:54.8, top:41.8 },
+
+      // Asia
+
+      { name:'China',                   left:78.0, top:33.0 },
+
+      { name:'Taiwan',                  left:82.2, top:38.0 },
+
+      { name:'Korea',                   left:82.0, top:32.0 },
+
+      { name:'Malaysia',                left:76.0, top:46.5 },
+
+      { name:'Indonesia',               left:78.0, top:52.5 },
+
+      { name:'Thailand',                left:74.2, top:43.5 },
+
+      { name:'India',                   left:69.0, top:36.0 },
+
+      // Regions
+
+      { name:'Middle East',             left:60.0, top:38.0 },
+
+      { name:'East Africa',             left:58.0, top:48.5 }
+
+    ];
+
+    (function(){
+
+      const pins = document.getElementById('pins');
+
+      if(!pins) return;
+
+      const pinsFrag = document.createDocumentFragment();
+
+      LOCATIONS.forEach(loc=>{
+
+        const b = document.createElement('button');
+
+        b.className = 'pin'; if (loc.type) b.dataset.type = loc.type;
+
+        b.style.left = loc.left + '%'; b.style.top  = loc.top + '%';
+
+        b.setAttribute('aria-label', loc.name);
+
+        b.innerHTML = `<span class=\"label\">${loc.name}</span>`;
+
+        pinsFrag.appendChild(b);
+
+      });
+
+      pins.appendChild(pinsFrag);
+
+    })();
+
+
+
+    /* Contact form submit */
+
+    const form = document.getElementById('contactForm');
+
+    const note = document.getElementById('formNote');
+
+    const toastOk = document.getElementById('toastSuccess');
+
+    const toastErr = document.getElementById('toastError');
+
+    const submitBtn = document.getElementById('submitBtn');
+
+    function toast(el){ el.classList.remove('hidden'); el.style.opacity='1';
+
+      setTimeout(()=>{ el.style.opacity='0'; setTimeout(()=>el.classList.add('hidden'), 350); }, 2600); }
+
+    form?.addEventListener('submit', async (e)=>{
+
+      e.preventDefault();
+
+      if (form.querySelector('input[name="_hp"]').value) return;   // bot trap
+
+      if (!form.checkValidity()){ form.reportValidity(); return; }
+
+      note.textContent='Sending…'; submitBtn.disabled = true;
+
+      try{
+
+        const data = new FormData(form);
+
+        const res = await fetch(form.action, { method:'POST', body:data, headers:{'Accept':'application/json'} });
+
+        if(res.ok){ form.reset(); note.textContent=''; toast(toastOk); }
+
+        else { note.textContent=''; toast(toastErr); }
+
+      }catch(_){ note.textContent=''; toast(toastErr); }
+
+      finally { submitBtn.disabled = false; }
+
+    });
+
+
+
+    /* Languages: FULL coverage + safe apply to avoid [object Object] */
+
+    const LANGS = [
+
+      {id:'en',    label:'English',          code:'EN'},
+
+      {id:'zh-CN', label:'简体中文',         code:'ZH-CN'},
+
+      {id:'zh-TW', label:'繁體中文',         code:'ZH-TW'},
+
+      {id:'fr',    label:'Français',         code:'FR'},
+
+      {id:'de',    label:'Deutsch',          code:'DE'},
+
+      {id:'it',    label:'Italiano',         code:'IT'},
+
+      {id:'pt-BR', label:'Português (BR)',   code:'PT-BR'},
+
+      {id:'es-CO', label:'Español (CO)',     code:'ES-CO'},
+
+      {id:'hi',    label:'हिन्दी',           code:'HI'}
+
+    ];
+
+
+
+    const L = {
+
+      /* ---------- EN (source of truth) ---------- */
+
+      "en": {
+
+        nav_about:"About", nav_solutions:"Services", nav_locations:"Locations", nav_segments:"Business", nav_engineering:"Engineering", nav_value:"Value", nav_identity:"Identity", nav_info:"Company Info", nav_contact:"Contact",
+
+        hero_title:"Global steel pipe sourcing & compliant delivery—done right.",
+
+        hero_sub:"From mill to well: origin-compliant supply, premium threading, and full-traceability execution.",
+
+        cta_solutions:"Explore services", cta_about:"About us", chip_compliance:"Origin Compliance",
+
+        about_title:"About Us",
+
+        about_intro_1:"Pipelink Global Trading Pte. Ltd. is a specialized provider of OCTG (Casing & Tubing), Line Pipe, and Mechanical/Structural Pipe solutions. Our core capabilities include supply chain integration, origin compliance structuring, premium connection engineering, and project-level delivery assurance.",
+
+        about_different_title:"We are not a traditional trading company.", about_different_sub:"We are a solutions partner that helps customers address:",
+
+        about_point_1:"Legal & compliant market entry", about_point_2:"Life-cycle cost optimization", about_point_3:"Downhole integrity & reliability",
+
+        about_role:"Our role extends beyond supply—into engineering, origin strategy, compliance assurance, and operational performance support.",
+
+        about_serve_title:"We serve", about_serve_list:"National oil companies, E&P operators, international oilfield service providers, drilling & completion contractors, EPC firms, and equipment/tool manufacturers.",
+
+        challenge_title:"Market Challenge We Solve", challenge_sub:"Different regions have different policies toward country of origin:",
+
+        tbl_market:"Market Type", tbl_restriction:"Key Restriction", tbl_requirement:"Customer Requirement",
+
+        challenge_row1_market:"Accept China origin", challenge_row1_rest:"Cost & delivery competitiveness", challenge_row1_req:"Stable, scalable supply at optimized pricing",
+
+        challenge_row2_market:"Do not accept China origin / apply AD/CVD", challenge_row2_rest:"Origin compliance & customs audit", challenge_row2_req:"Non-China origin with full traceability & equal performance",
+
+        framework_title:"Our solution framework", framework_point_1:"For accepting markets → Cost advantage & volume stability", framework_point_2:"For restricted markets → Southeast Asia origin compliance with performance consistency", framework_note:"This ensures customers achieve the same field performance, regardless of market restrictions.",
+
+        solutions_title:"Services", solutions_sub:"End-to-end offerings for demanding energy and infrastructure projects.",
+
+        sol_1_t:"Mill Sourcing", sol_1_d:"OCTG, Line Pipe, Mechanical/Structural pipes from qualified mills.",
+
+        sol_2_t:"Heat Treatment (SEA)", sol_2_d:"Q&T, normalize, stress-relief; full traceability & tests.",
+
+        sol_3_t:"Premium Threading", sol_3_d:"PL/PH series; torque, seal performance & EMI validation.",
+
+        sol_4_t:"Origin Compliance", sol_4_d:"SEA COO pathways for AD/CVD-sensitive markets.",
+
+        sol_5_t:"Quality & Inspection", sol_5_d:"NDT/EMI, hydro, make-up torque; 3rd-party witness welcome.",
+
+        sol_6_t:"Logistics & Delivery", sol_6_d:"FOB/CIF/DDP, stenciling, protectors, export packing, dossier.",
+
+        locations_title:"Our Locations & Coverage", locations_sub:"Headquarters: Singapore. Coverage includes the Middle East, Southeast Asia, South America, North Asia, Africa, North America, and selected European regions.",
+
+        segments_title:"Business Segments", seg_tbl_cat:"Product Category", seg_tbl_std:"Standards", seg_tbl_app:"Common Applications",
+
+        seg1_title:"Business Segment I — Markets That Accept China Origin", seg1_app1:"Drilling, completion, production & workover", seg1_app2:"Oil & gas gathering and transmission", seg1_cat3:"Mechanical / Structural", seg1_app3:"Offshore structures, fabrication, tool joints, load-bearing", seg1_mills_label:"Strategic mills:", seg1_k1:"Reliable production capacity and delivery control", seg1_k2:"Full steel grade and specification coverage", seg1_k3:"Strong certification & QA documentation frameworks", seg1_k4:"Superior landed cost competitiveness",
+
+        seg2_title:"Business Segment II — Origin-Compliant via Southeast Asia", seg2_intro:"Upgradable mother pipes (East Asia) → Heat treatment & premium threading (SEA) → SEA Certificate of Origin → Compliant entry into restricted markets.", seg2_tbl_proc:"Process", seg2_tbl_cap:"Technical Capability Description", seg2_row1:"Controls mechanical strength, toughness, fatigue life & corrosion resistance", seg2_row2:"PL-series, PH-series, and compatible metal-to-metal seal connections", seg2_row3:"NDT / EMI / torque & seal testing / hydrostatic proofing; third-party witnessed when required", seg2_row4:"Material origin → processing records → QA data → COO → shipping dossier", seg2_deliv:"Deliverable range:", seg2_thread:"Supportable threading:",
+
+        eng_title:"Premium Connection & Interchangeable Thread Design Capability", eng_value:"Engineering value beyond supply. We design, adapt, and validate interchangeable / compatible premium connections so customers can:", eng_k1:"Reduce tubular system costs", eng_k2:"Standardize connection types across multiple supply sources", eng_k3:"Lower inventory and spare stock complexity", eng_k4:"Ensure safe, repeatable, and reliable downhole makeup & sealing", eng_tbl_cap:"Engineering Capability", eng_tbl_ben:"Customer Benefit", eng_row1c:"Interchangeable / compatible premium thread design", eng_row1b:"Replaces high-cost proprietary connections at lower system cost", eng_row2c:"Seal geometry & load path optimization", eng_row2b:"Maintains high seal reliability and torque performance", eng_row3c:"Cross-mill interface standardization", eng_row3b:"Ensures interchangeability across multiple suppliers", eng_row4c:"Fatigue, torque & seal performance modeling", eng_row4b:"Enables safe long-term operation in complex downhole environments", eng_quote:"We do not just cut threads — we ensure those threads perform safely and reliably downhole.",
+
+        value_title:"Our Strategic Value Proposition", val_dim:"Dimension", val_deliver:"What We Deliver", val_d1:"Market Access", val_v1:"Origin-compliant supply into restricted regions", val_d2:"Cost Optimization", val_v2:"Optimization of total project cost, not just per-ton pricing", val_d3:"Technical Reliability", val_v3:"Downhole seal integrity and fatigue performance you can validate", val_d4:"Compliance & Auditability", val_v4:"Full traceability and documentation control", val_d5:"Long-Term Operational Resilience", val_v5:"Multi-region, multi-plant supply flexibility and backup capacity",
+
+        identity_title:"Our Identity & Positioning", who:"Who We Are", what:"What We Do", who1:"Origin Compliance Supply Chain Architect", what1:"Ensure legal & traceable market entry", who2:"Premium Connection & Downhole Performance Engineer", what2:"Guarantee system reliability under well conditions", who3:"Cost & Life-Cycle Efficiency Optimizer", what3:"Reduce long-term tubular ownership cost", who4:"Strategic Partner, not a Vendor", what4:"Work with customers across multiple projects and years", identity_note:"We do not just supply pipes. We design tubular systems that can enter the market, operate safely, and deliver sustainable cost advantage.",
+
+        info_title:"Company Details", info_cname:"Company Name", info_addr:"Address", info_contact:"Contact",
+
+        contact_title:"Contact Us", contact_sub:"Tell us about your project. We’ll reply within one business day.", f_name:"Name *", f_company:"Company *", f_email:"Email *", f_phone:"Phone", f_country:"Country *", f_subject:"Subject *", f_type:"Inquiry Type", f_message:"Message *", f_file:"Attach file (optional)", f_consent:"I consent to Pipelink processing my details to reply to this inquiry. *", f_send:"Send message", direct_title:"Direct Contact", direct_email:"Email:", direct_phone:"Phone:", direct_addr:"Address:", toast_ok:"Message sent. We’ll get back to you shortly.", toast_err:"Something went wrong. Please email", back_top:"Back to top ↑", close:"Close", no_results:"No results"
+
+      },
+
+
+
+      /* ---------- Simplified Chinese ---------- */
+
+      "zh-CN": {
+
+        nav_about:"关于我们", nav_solutions:"服务", nav_locations:"布局与覆盖", nav_segments:"业务板块", nav_engineering:"工程能力", nav_value:"价值主张", nav_identity:"身份定位", nav_info:"公司信息", nav_contact:"联系",
+
+        hero_title:"全球钢管合规供应与交付——一次到位。",
+
+        hero_sub:"从钢厂到井口：合规原产地供应、Premium 扣型加工与全链路可追溯交付。",
+
+        cta_solutions:"查看方案", cta_about:"关于我们", chip_compliance:"原产地合规",
+
+        about_title:"关于我们",
+
+        about_intro_1:"Pipelink Global Trading Pte. Ltd. 专注于 OCTG（套管/油管）、线管及机械/结构用管的整体解决方案。核心能力：供应链整合、原产地合规架构、Premium 扣型工程与项目级交付保障。",
+
+        about_different_title:"我们不是传统贸易商。", about_different_sub:"我们是帮助客户解决真实问题的解决方案伙伴：",
+
+        about_point_1:"合法合规进入目标市场", about_point_2:"全生命周期成本优化", about_point_3:"井下连接完整性与可靠性",
+
+        about_role:"我们的角色延伸至工程、原产地策略、合规保障与运营性能支持。",
+
+        about_serve_title:"我们服务的客户", about_serve_list:"国家石油公司、E&P 运营商、国际油服、完井与钻修承包商、EPC 与工具设备制造商。",
+
+        challenge_title:"我们解决的市场挑战", challenge_sub:"不同地区对原产地政策不同：",
+
+        tbl_market:"市场类型", tbl_restriction:"主要限制", tbl_requirement:"客户需求",
+
+        challenge_row1_market:"接受中国原产地", challenge_row1_rest:"成本与交付竞争力", challenge_row1_req:"稳定、可扩展、价格优化的供应",
+
+        challenge_row2_market:"不接受中国原产地 / 征收 AD/CVD", challenge_row2_rest:"原产地合规与海关审计", challenge_row2_req:"非中国原产地、全流程可追溯且同等性能",
+
+        framework_title:"解决方案框架", framework_point_1:"接受市场 → 成本优势与规模稳定", framework_point_2:"受限市场 → 东南亚原产地合规且性能一致", framework_note:"确保在不同监管环境下获得一致的现场性能。",
+
+        solutions_title:"解决方案", solutions_sub:"面向高要求能源与基础设施项目的一体化能力。",
+
+        sol_1_t:"钢厂资源与采购", sol_1_d:"来自合格钢厂的 OCTG、线管与机械/结构管。",
+
+        sol_2_t:"热处理（东南亚）", sol_2_d:"Q&T、正火、消除应力；全流程追溯与测试。",
+
+        sol_3_t:"Premium 扣型加工", sol_3_d:"PL/PH 系列；扭矩、密封与 EMI 验证。",
+
+        sol_4_t:"原产地合规", sol_4_d:"面向 AD/CVD 敏感市场的东南亚 COO 路径。",
+
+        sol_5_t:"质量与检验", sol_5_d:"NDT/EMI、水压、上扣扭矩；支持第三方见证。",
+
+        sol_6_t:"物流与交付", sol_6_d:"FOB/CIF/DDP、喷字标识、护丝、出口包装与资料包。",
+
+        locations_title:"布局与覆盖", locations_sub:"总部：新加坡。覆盖中东、东南亚、南美、北亚、非洲、北美及部分欧洲地区。",
+
+        segments_title:"业务板块", seg_tbl_cat:"产品类别", seg_tbl_std:"标准", seg_tbl_app:"典型应用",
+
+        seg1_title:"业务板块一——接受中国原产地的市场", seg1_app1:"钻井、完井、生产与修井", seg1_app2:"油气集输与长输管道", seg1_cat3:"机械 / 结构", seg1_app3:"海工结构、设备制造、接头与承载件", seg1_mills_label:"核心合作钢厂：", seg1_k1:"可控产能与交期管理", seg1_k2:"完整的钢级与规格覆盖", seg1_k3:"完善的认证与质量文件体系", seg1_k4:"优越的到岸成本竞争力",
+
+        seg2_title:"业务板块二——东南亚原产地合规供应", seg2_intro:"东亚可升级母管 → 东南亚热处理与 Premium 扣型 → 东南亚 COO → 合规进入受限市场。", seg2_tbl_proc:"工序", seg2_tbl_cap:"技术能力说明", seg2_row1:"控制强度、韧性、疲劳与耐蚀", seg2_row2:"PL/PH 系列及兼容金属-对-金属密封", seg2_row3:"无损/EMI/扭矩与密封测试/水压；可第三方见证", seg2_row4:"材料来源 → 加工记录 → 质量数据 → COO → 出运资料", seg2_deliv:"核心供货范围：", seg2_thread:"可支持的扣型范围：",
+
+        eng_title:"Premium 连接与互换扣工程能力", eng_value:"不仅是供货，我们还提供接口设计与验证，使客户能够：", eng_k1:"降低系统成本", eng_k2:"跨来源统一连接形式", eng_k3:"降低库存与备件复杂度", eng_k4:"确保安全、可重复的上扣与密封可靠性", eng_tbl_cap:"工程能力", eng_tbl_ben:"客户收益", eng_row1c:"互换 / 兼容 Premium 扣设计", eng_row1b:"以更低系统成本替代高价专利扣", eng_row2c:"密封几何与受力路径优化", eng_row2b:"保持高密封与扭矩性能", eng_row3c:"跨钢厂接口标准化", eng_row3b:"实现多供应商互换性", eng_row4c:"疲劳 / 扭矩 / 密封建模", eng_row4b:"适用于复杂井况的长期安全运行", eng_quote:"我们不仅切扣，更确保井下可靠性能。",
+
+        value_title:"我们的价值主张", val_dim:"维度", val_deliver:"我们交付", val_d1:"市场准入", val_v1:"进入受限地区的合规供应", val_d2:"成本优化", val_v2:"关注项目全周期成本而非吨价", val_d3:"技术可靠性", val_v3:"可验证的密封与疲劳性能", val_d4:"合规与审计", val_v4:"全流程追溯与文件控制", val_d5:"长期韧性", val_v5:"多区域多工厂灵活与备份",
+
+        identity_title:"我们的身份与定位", who:"我们的角色", what:"我们的工作", who1:"原产地合规供应链架构师", what1:"确保合法、可追溯的市场进入", who2:"Premium 连接与井下性能工程师", what2:"保障井下工况下的系统可靠性", who3:"成本与生命周期优化者", what3:"降低长期拥有成本", who4:"战略伙伴而非一次性供应商", what4:"跨项目、跨年度的持续合作", identity_note:"我们不仅供货，更设计能进入市场且安全运行的管柱系统。",
+
+        info_title:"公司信息", info_cname:"公司名称", info_addr:"地址", info_contact:"联系人",
+
+        contact_title:"联系我们", contact_sub:"请告诉我们您的项目，我们将在一个工作日内回复。", f_name:"姓名 *", f_company:"公司 *", f_email:"邮箱 *", f_phone:"电话", f_country:"国家/地区 *", f_subject:"主题 *", f_type:"询问类别", f_message:"留言 *", f_file:"附件（可选）", f_consent:"我同意 Pipelink 为回复此询问而处理我的信息。*", f_send:"发送", direct_title:"直接联系", direct_email:"邮箱：", direct_phone:"电话：", direct_addr:"地址：", toast_ok:"已发送，我们将尽快联系您。", toast_err:"发送失败，请邮件联系", back_top:"返回顶部 ↑", close:"关闭", no_results:"无结果"
+
+      },
+
+
+
+      /* ---------- Traditional Chinese ---------- */
+
+      "zh-TW": {
+
+        nav_about:"關於我們", nav_solutions:"服务", nav_locations:"布局與覆蓋", nav_segments:"業務板塊", nav_engineering:"工程能力", nav_value:"價值主張", nav_identity:"身份定位", nav_info:"公司資訊", nav_contact:"聯絡",
+
+        hero_title:"全球鋼管合規供應與交付——一次到位。",
+
+        hero_sub:"從鋼廠到井口：合規原產地供應、Premium 扣型加工與全鏈路可追溯交付。",
+
+        cta_solutions:"查看方案", cta_about:"關於我們", chip_compliance:"原產地合規",
+
+        about_title:"關於我們",
+
+        about_intro_1:"Pipelink Global Trading Pte. Ltd. 專注於 OCTG（套管/油管）、線管及機械/結構用管的整體解決方案。核心能力：供應鏈整合、原產地合規架構、Premium 扣型工程與項目級交付保障。",
+
+        about_different_title:"我們不是傳統貿易商。", about_different_sub:"我們是幫助客戶解決真正問題的解決方案夥伴：",
+
+        about_point_1:"合法合規進入目標市場", about_point_2:"全生命週期成本優化", about_point_3:"井下連接完整性與可靠性",
+
+        about_role:"我們的角色延伸至工程、原產地策略、合規保障與營運性能支援。",
+
+        about_serve_title:"我們服務的客戶", about_serve_list:"國家石油公司、E&P 營運商、國際油服、完井與鑽修承包商、EPC 與工具設備製造商。",
+
+        challenge_title:"我們解決的市場挑戰", challenge_sub:"不同地區對原產地政策不同：",
+
+        tbl_market:"市場類型", tbl_restriction:"主要限制", tbl_requirement:"客戶需求",
+
+        challenge_row1_market:"接受中國原產地", challenge_row1_rest:"成本與交付競爭力", challenge_row1_req:"穩定、可擴展、價格優化的供應",
+
+        challenge_row2_market:"不接受中國原產地 / 徵收 AD/CVD", challenge_row2_rest:"原產地合規與海關稽核", challenge_row2_req:"非中國原產地、全流程可追溯且同等性能",
+
+        framework_title:"解決方案框架", framework_point_1:"接受市場 → 成本優勢與規模穩定", framework_point_2:"受限市場 → 東南亞原產地合規且性能一致", framework_note:"確保在不同監管環境下獲得一致的現場性能。",
+
+        solutions_title:"解決方案", solutions_sub:"面向高要求能源與基礎設施專案的一體化能力。",
+
+        sol_1_t:"鋼廠資源與採購", sol_1_d:"來自合格鋼廠的 OCTG、線管與機械/結構管。",
+
+        sol_2_t:"熱處理（東南亞）", sol_2_d:"Q&T、正火、消除應力；全流程追溯與測試。",
+
+        sol_3_t:"Premium 扣型加工", sol_3_d:"PL/PH 系列；扭矩、密封與 EMI 驗證。",
+
+        sol_4_t:"原產地合規", sol_4_d:"面向 AD/CVD 敏感市場的東南亞 COO 路徑。",
+
+        sol_5_t:"品質與檢驗", sol_5_d:"NDT/EMI、水壓、上扣扭矩；支援第三方見證。",
+
+        sol_6_t:"物流與交付", sol_6_d:"FOB/CIF/DDP、噴字標識、護絲、出口包裝與資料包。",
+
+        locations_title:"布局與覆蓋", locations_sub:"總部：新加坡。覆蓋中東、東南亞、南美、北亞、非洲、北美及部分歐洲地區。",
+
+        segments_title:"業務板塊", seg_tbl_cat:"產品類別", seg_tbl_std:"標準", seg_tbl_app:"典型應用",
+
+        seg1_title:"業務板塊一——接受中國原產地的市場", seg1_app1:"鑽井、完井、生產與修井", seg1_app2:"油氣集輸與長輸管道", seg1_cat3:"機械 / 結構", seg1_app3:"海工結構、設備製造、接頭與承載件", seg1_mills_label:"核心合作鋼廠：", seg1_k1:"可控產能與交期管理", seg1_k2:"完整的鋼級與規格覆蓋", seg1_k3:"完善的認證與品質文件體系", seg1_k4:"優越的到岸成本競爭力",
+
+        seg2_title:"業務板塊二——東南亞原產地合規供應", seg2_intro:"東亞可升級母管 → 東南亞熱處理與 Premium 扣型 → 東南亞 COO → 合規進入受限市場。", seg2_tbl_proc:"工序", seg2_tbl_cap:"技術能力說明", seg2_row1:"控制強度、韌性、疲勞與耐蝕", seg2_row2:"PL/PH 系列及相容金屬對金屬密封", seg2_row3:"無損/EMI/扭矩與密封測試/水壓；可第三方見證", seg2_row4:"材料來源 → 加工紀錄 → 品質數據 → COO → 出運資料", seg2_deliv:"核心供貨範圍：", seg2_thread:"可支援的扣型範圍：",
+
+        eng_title:"Premium 連接與互換扣工程能力", eng_value:"不僅是供應，我們還提供介面設計與驗證，使客戶能夠：", eng_k1:"降低系統成本", eng_k2:"跨來源統一連接形式", eng_k3:"降低庫存與備件複雜度", eng_k4:"確保安全、可重複的上扣與密封可靠性", eng_tbl_cap:"工程能力", eng_tbl_ben:"客戶收益", eng_row1c:"互換 / 相容 Premium 扣設計", eng_row1b:"以更低系統成本替代高價專利扣", eng_row2c:"密封幾何與受力路徑最佳化", eng_row2b:"保持高密封與扭矩性能", eng_row3c:"跨鋼廠介面標準化", eng_row3b:"實現多供應商互換性", eng_row4c:"疲勞 / 扭矩 / 密封建模", eng_row4b:"適用於複雜井況的長期安全運行", eng_quote:"我們不只切扣，更確保井下可靠性能。",
+
+        value_title:"我們的價值主張", val_dim:"維度", val_deliver:"我們交付", val_d1:"市場准入", val_v1:"進入受限地區的合規供應", val_d2:"成本優化", val_v2:"關注專案全週期成本而非噸價", val_d3:"技術可靠性", val_v3:"可驗證的密封與疲勞性能", val_d4:"合規與稽核", val_v4:"全流程追溯與文件控制", val_d5:"長期韌性", val_v5:"多區域多工廠彈性與備援",
+
+        identity_title:"我們的身份與定位", who:"我們是誰", what:"我們做什麼", who1:"原產地合規供應鏈架構師", what1:"確保合法、可追溯的市場進入", who2:"Premium 連接與井下性能工程師", what2:"保障井下工況下的系統可靠性", who3:"成本與生命週期優化者", what3:"降低長期擁有成本", who4:"策略夥伴而非供應商", what4:"跨專案、跨年度的長期合作", identity_note:"我們不僅供貨，更設計能進入市場且安全運行的管柱系統。",
+
+        info_title:"公司資訊", info_cname:"公司名稱", info_addr:"地址", info_contact:"聯絡人",
+
+        contact_title:"聯絡我們", contact_sub:"請告訴我們您的專案，我們將在一個工作日內回覆。", f_name:"姓名 *", f_company:"公司 *", f_email:"信箱 *", f_phone:"電話", f_country:"國家/地區 *", f_subject:"主題 *", f_type:"詢問類別", f_message:"留言 *", f_file:"附件（可選）", f_consent:"我同意 Pipelink 為回覆此詢問而處理我的資訊。*", f_send:"送出", direct_title:"直接聯絡", direct_email:"信箱：", direct_phone:"電話：", direct_addr:"地址：", toast_ok:"已送出，我們將盡快聯絡您。", toast_err:"發送失敗，請以郵件聯絡", back_top:"返回頂部 ↑", close:"關閉", no_results:"無結果"
+
+      },
+
+
+
+      /* ---------- French ---------- */
+
+      "fr": {
+
+        nav_about:"À propos", nav_solutions:"Solutions", nav_locations:"Implantations", nav_segments:"Segments d’activité", nav_engineering:"Ingénierie", nav_value:"Valeur", nav_identity:"Identité", nav_info:"Infos société", nav_contact:"Contact",
+
+        hero_title:"Approvisionnement en tubes acier et livraison conforme — bien faits.",
+
+        hero_sub:"Du laminoir au puits : origine conforme, filetage premium et traçabilité complète.",
+
+        cta_solutions:"Découvrir les solutions", cta_about:"À propos de nous", chip_compliance:"Conformité d’origine",
+
+        about_title:"À propos de nous",
+
+        about_intro_1:"Pipelink Global Trading Pte. Ltd. fournit des solutions pour OCTG (casing & tubing), conduites et tubes mécaniques/structurels. Nos atouts : intégration de la chaîne d’approvisionnement, architecture de conformité d’origine, ingénierie des connexions premium et garantie de livraison au niveau projet.",
+
+        about_different_title:"Nous ne sommes pas un négociant traditionnel.", about_different_sub:"Nous sommes un partenaire de solutions qui aide les clients à résoudre :",
+
+        about_point_1:"L’entrée sur le marché en toute légalité", about_point_2:"L’optimisation des coûts sur le cycle de vie", about_point_3:"L’intégrité et la fiabilité au fond du puits",
+
+        about_role:"Notre rôle dépasse l’approvisionnement — ingénierie, stratégie d’origine, conformité et performances opérationnelles.",
+
+        about_serve_title:"Nous servons", about_serve_list:"Compagnies nationales, opérateurs E&P, sociétés de services pétroliers, contractants de complétion/forage, EPC et fabricants d’équipements/outillages.",
+
+        challenge_title:"Le défi marché que nous résolvons", challenge_sub:"Les politiques d’origine diffèrent selon les régions :",
+
+        tbl_market:"Type de marché", tbl_restriction:"Restriction clé", tbl_requirement:"Exigence client",
+
+        challenge_row1_market:"Accepte l’origine Chine", challenge_row1_rest:"Compétitivité coût & délai", challenge_row1_req:"Approvisionnement stable, évolutif et optimisé",
+
+        challenge_row2_market:"N’accepte pas l’origine Chine / AD/CVD", challenge_row2_rest:"Conformité d’origine & audit douanier", challenge_row2_req:"Origine non-chinoise, traçable et performance équivalente",
+
+        framework_title:"Notre cadre de solution", framework_point_1:"Marchés ouverts → Avantage coût & volumes stables", framework_point_2:"Marchés restreints → Conformité d’origine ASEAN à performance constante", framework_note:"Ainsi, une performance terrain identique quel que soit le marché.",
+
+        solutions_title:"Solutions", solutions_sub:"Offres de bout en bout pour projets exigeants d’énergie et d’infrastructure.",
+
+        sol_1_t:"Approvisionnement usines", sol_1_d:"OCTG, conduites, tubes mécaniques/structurels issus d’usines qualifiées.",
+
+        sol_2_t:"Traitement thermique (ASEAN)", sol_2_d:"Q&T, normalisation, détente ; traçabilité et essais complets.",
+
+        sol_3_t:"Filetage premium", sol_3_d:"Séries PL/PH ; couple, étanchéité et validation EMI.",
+
+        sol_4_t:"Conformité d’origine", sol_4_d:"Parcours COO ASEAN pour marchés sensibles AD/CVD.",
+
+        sol_5_t:"Qualité & inspection", sol_5_d:"CND/EMI, hydro, couple de serrage ; témoin tiers bienvenu.",
+
+        sol_6_t:"Logistique & livraison", sol_6_d:"FOB/CIF/DDP, marquage, protecteurs, emballage export, dossier.",
+
+        locations_title:"Nos implantations & couverture", locations_sub:"Siège : Singapour. Couverture : Moyen-Orient, ASEAN, Amérique du Sud, Asie du Nord, Afrique, Amérique du Nord et certaines régions d’Europe.",
+
+        segments_title:"Segments d’activité", seg_tbl_cat:"Catégorie produit", seg_tbl_std:"Normes", seg_tbl_app:"Applications",
+
+        seg1_title:"Segment I — Marchés acceptant l’origine Chine", seg1_app1:"Forage, complétion, production & workover", seg1_app2:"Collecte/transport pétrole & gaz", seg1_cat3:"Mécanique / Structurel", seg1_app3:"Structures offshore, fabrication, porte-outils et charges", seg1_mills_label:"Usines stratégiques :", seg1_k1:"Capacité & maîtrise des délais", seg1_k2:"Gamme acier et spécifications complètes", seg1_k3:"Certification & documentation qualité solides", seg1_k4:"Compétitivité de coût rendu supérieure",
+
+        seg2_title:"Segment II — Conformité d’origine via l’ASEAN", seg2_intro:"Mères tubulaires évolutives (Asie de l’Est) → Traitement thermique & filetage premium (ASEAN) → COO ASEAN → Entrée conforme sur marchés restreints.", seg2_tbl_proc:"Processus", seg2_tbl_cap:"Description de capacité technique", seg2_row1:"Maîtrise résistance, ténacité, fatigue et corrosion", seg2_row2:"Connexions PL/PH et compatibles à joint métal-métal", seg2_row3:"CND / EMI / essais couple & étanchéité / épreuve hydro ; témoin tiers si requis", seg2_row4:"Origine matière → enregistrements procédé → QA → COO → dossier expédition", seg2_deliv:"Plage livrable :", seg2_thread:"Filetages pris en charge :",
+
+        eng_title:"Connexions premium & conception de filetages interchangeables", eng_value:"Une ingénierie au-delà de l’approvisionnement. Nous concevons/adaptons/validons des connexions premium interchangeables permettant aux clients de :", eng_k1:"Réduire les coûts système tubulaire", eng_k2:"Standardiser les connexions multi-sources", eng_k3:"Réduire la complexité des stocks", eng_k4:"Assurer un serrage/étanchéité sûrs et répétables", eng_tbl_cap:"Capacité d’ingénierie", eng_tbl_ben:"Bénéfice client", eng_row1c:"Conception de filetages premium interchangeables/compatibles", eng_row1b:"Remplace les connexions propriétaires coûteuses", eng_row2c:"Optimisation géométrie d’étanchéité & chemin de charge", eng_row2b:"Haute fiabilité d’étanchéité et de couple", eng_row3c:"Standardisation inter-usines", eng_row3b:"Interchangeabilité multi-fournisseurs", eng_row4c:"Modélisation fatigue/couple/étanchéité", eng_row4b:"Exploitation sûre long terme en puits complexes", eng_quote:"Nous ne faisons pas que fileter — nous garantissons la performance au fond du puits.",
+
+        value_title:"Notre proposition de valeur", val_dim:"Dimension", val_deliver:"Ce que nous apportons", val_d1:"Accès marché", val_v1:"Approvisionnement conforme dans les régions restreintes", val_d2:"Optimisation des coûts", val_v2:"Coût total de projet, pas seulement le prix à la tonne", val_d3:"Fiabilité technique", val_v3:"Étanchéité et tenue en fatigue vérifiables", val_d4:"Conformité & auditabilité", val_v4:"Traçabilité intégrale et maîtrise documentaire", val_d5:"Résilience opérationnelle long terme", val_v5:"Flexibilité multi-régions/multi-usines",
+
+        identity_title:"Notre identité & positionnement", who:"Qui nous sommes", what:"Ce que nous faisons", who1:"Architecte de chaîne d’approvisionnement conforme à l’origine", what1:"Assurer une entrée légale et traçable", who2:"Ingénierie des connexions premium & performances en puits", what2:"Garantir la fiabilité en conditions réelles", who3:"Optimisation des coûts & du cycle de vie", what3:"Réduire le coût total de possession", who4:"Partenaire stratégique, pas simple vendeur", what4:"Accompagner plusieurs projets sur la durée", identity_note:"Nous ne livrons pas seulement des tubes. Nous concevons des systèmes tubulaires aptes au marché, sûrs et compétitifs.",
+
+        info_title:"Informations sur l’entreprise", info_cname:"Raison sociale", info_addr:"Adresse", info_contact:"Contact",
+
+        contact_title:"Nous contacter", contact_sub:"Parlez-nous de votre projet. Réponse sous un jour ouvrable.", f_name:"Nom *", f_company:"Entreprise *", f_email:"Email *", f_phone:"Téléphone", f_country:"Pays *", f_subject:"Objet *", f_type:"Type de demande", f_message:"Message *", f_file:"Pièce jointe (optionnel)", f_consent:"J’autorise Pipelink à traiter mes données pour répondre. *", f_send:"Envoyer", direct_title:"Contact direct", direct_email:"Email :", direct_phone:"Téléphone :", direct_addr:"Adresse :", toast_ok:"Message envoyé. Nous revenons vers vous rapidement.", toast_err:"Un problème est survenu. Merci d’écrire à", back_top:"Haut de page ↑", close:"Fermer", no_results:"Aucun résultat"
+
+      },
+
+
+
+      /* ---------- German ---------- */
+
+      "de": {
+
+        nav_about:"Über uns", nav_solutions:"Lösungen", nav_locations:"Standorte", nav_segments:"Geschäftssegmente", nav_engineering:"Ingenieurwesen", nav_value:"Mehrwert", nav_identity:"Identität", nav_info:"Firmendaten", nav_contact:"Kontakt",
+
+        hero_title:"Stahlrohr-Beschaffung & konforme Lieferung – richtig gemacht.",
+
+        hero_sub:"Vom Werk bis zum Bohrloch: herkunftskonforme Lieferkette, Premium-Gewinde und vollständige Nachverfolgbarkeit.",
+
+        cta_solutions:"Lösungen ansehen", cta_about:"Über uns", chip_compliance:"Ursprungskonformität",
+
+        about_title:"Über uns",
+
+        about_intro_1:"Pipelink Global Trading Pte. Ltd. bietet Lösungen für OCTG (Casing & Tubing), Leitungsrohre sowie mechanische/strukturelle Rohre. Kernkompetenzen: Supply-Chain-Integration, Ursprungskonformität, Premium-Verbindungs­technik und projektsichere Lieferung.",
+
+        about_different_title:"Wir sind kein klassischer Händler.", about_different_sub:"Wir sind ein Lösungspartner und adressieren:",
+
+        about_point_1:"Rechtskonformen Markteintritt", about_point_2:"Lebenszyklus-Kostenoptimierung", about_point_3:"Integrität & Zuverlässigkeit im Bohrloch",
+
+        about_role:"Unsere Rolle geht über die Lieferung hinaus – Engineering, Ursprung, Compliance und Betriebsleistung.",
+
+        about_serve_title:"Unsere Kunden", about_serve_list:"Staatsölgesellschaften, E&P-Operatoren, internationale Servicefirmen, Completion- & Workover-Auftragnehmer, EPCs sowie Geräte-/Werkzeughersteller.",
+
+        challenge_title:"Die Markt­herausforderung, die wir lösen", challenge_sub:"Regeln zur Ursprungserklärung variieren je Region:",
+
+        tbl_market:"Marktart", tbl_restriction:"Kernrestriktion", tbl_requirement:"Kundenanforderung",
+
+        challenge_row1_market:"Akzeptiert China-Ursprung", challenge_row1_rest:"Kosten- & Lieferwettbewerb", challenge_row1_req:"Stabile, skalierbare Versorgung zu optimierten Preisen",
+
+        challenge_row2_market:"Akzeptiert China-Ursprung nicht / AD/CVD", challenge_row2_rest:"Ursprungskonformität & Zollprüfung", challenge_row2_req:"Nicht-China-Ursprung mit voller Nachverfolgbarkeit & gleicher Performance",
+
+        framework_title:"Unser Lösungsrahmen", framework_point_1:"Offene Märkte → Kostenvorteil & Volumenstabilität", framework_point_2:"Restriktive Märkte → ASEAN-Ursprung mit konstanter Performance", framework_note:"So entsteht identische Feldleistung – unabhängig vom Markt.",
+
+        solutions_title:"Lösungen", solutions_sub:"End-to-End-Leistungen für anspruchsvolle Energie- und Infrastrukturprojekte.",
+
+        sol_1_t:"Werksbeschaffung", sol_1_d:"OCTG, Leitungs-, mechanische/strukturelle Rohre aus qualifizierten Werken.",
+
+        sol_2_t:"Wärmebehandlung (ASEAN)", sol_2_d:"Q&T, Normalisieren, Spannungsarm; vollständige Nachverfolgbarkeit & Tests.",
+
+        sol_3_t:"Premium-Gewindeschneiden", sol_3_d:"PL/PH-Serien; Drehmoment-, Dicht- & EMI-Validierung.",
+
+        sol_4_t:"Ursprungskonformität", sol_4_d:"ASEAN-COO-Wege für AD/CVD-sensible Märkte.",
+
+        sol_5_t:"Qualität & Prüfung", sol_5_d:"ZfP/EMI, Hydrodruck, Make-up-Drehmoment; Drittzeugen möglich.",
+
+        sol_6_t:"Logistik & Lieferung", sol_6_d:"FOB/CIF/DDP, Stencil, Schutzkappen, Exportverpackung, Dossier.",
+
+        locations_title:"Standorte & Abdeckung", locations_sub:"Hauptsitz: Singapur. Abdeckung: Nahost, ASEAN, Südamerika, Nordasien, Afrika, Nordamerika sowie ausgewählte Regionen Europas.",
+
+        segments_title:"Geschäftssegmente", seg_tbl_cat:"Produktkategorie", seg_tbl_std:"Normen", seg_tbl_app:"Typische Anwendungen",
+
+        seg1_title:"Segment I — Märkte, die China-Ursprung akzeptieren", seg1_app1:"Bohrung, Komplettierung, Produktion & Workover", seg1_app2:"Öl-/Gas-Sammlung und Transport", seg1_cat3:"Mechanisch / Strukturell", seg1_app3:"Offshore-Strukturen, Fertigung, Tool Joints, Tragteile", seg1_mills_label:"Strategische Werke:", seg1_k1:"Beherrschte Kapazität & Liefertermine", seg1_k2:"Komplette Stahlgüten- und Spektrum-Abdeckung", seg1_k3:"Starke Zertifizierung & QA-Dokumentation", seg1_k4:"Überlegene Kostenposition geliefert",
+
+        seg2_title:"Segment II — Ursprungskonform via ASEAN", seg2_intro:"Aufrüstbare Mutterrohre (Ostasien) → Wärmebehandlung & Premium-Gewinde (ASEAN) → COO ASEAN → Konformer Zugang zu restriktiven Märkten.", seg2_tbl_proc:"Prozess", seg2_tbl_cap:"Beschreibung der technischen Fähigkeit", seg2_row1:"Steuert Festigkeit, Zähigkeit, Ermüdung & Korrosionsbeständigkeit", seg2_row2:"PL/PH-Serien und kompatible Metall-auf-Metall-Dichtungen", seg2_row3:"ZfP / EMI / Drehmoment- & Dichttests / Hydro; Drittzeuge bei Bedarf", seg2_row4:"Materialursprung → Prozessaufzeichnungen → QA-Daten → COO → Versanddossier", seg2_deliv:"Lieferbereich:", seg2_thread:"Unterstützte Gewinde:",
+
+        eng_title:"Premium-Verbindungen & austauschbare Gewindekonstruktion", eng_value:"Engineering über die Lieferung hinaus. Wir konstruieren/anpassen/validieren austauschbare Premium-Verbindungen, damit Kunden:", eng_k1:"Systemkosten der Rohrsäule senken", eng_k2:"Verbindungstypen über Lieferanten hinweg standardisieren", eng_k3:"Lager- und Ersatzteil-Komplexität reduzieren", eng_k4:"Sicheres, wiederholbares Make-up & Abdichtung gewährleisten", eng_tbl_cap:"Ingenieur-Fähigkeit", eng_tbl_ben:"Kundennutzen", eng_row1c:"Austauschbare/kompatible Premium-Gewinde", eng_row1b:"Ersatz teurer proprietärer Verbindungen", eng_row2c:"Optimierung von Dichtgeometrie & Lastweg", eng_row2b:"Hohe Dicht- & Drehmomentzuverlässigkeit", eng_row3c:"Schnittstellen-Standardisierung über Werke", eng_row3b:"Lieferantenübergreifende Austauschbarkeit", eng_row4c:"Ermüdungs-/Drehmoment-/Dicht-Modellierung", eng_row4b:"Sicherer Langzeitbetrieb in komplexen Bohrlöchern", eng_quote:"Wir schneiden nicht nur Gewinde — wir sichern zuverlässige Leistung im Bohrloch.",
+
+        value_title:"Unser strategisches Leistungsversprechen", val_dim:"Dimension", val_deliver:"Unser Beitrag", val_d1:"Marktzugang", val_v1:"Konforme Belieferung in restriktive Regionen", val_d2:"Kostenoptimierung", val_v2:"Gesamtkosten des Projekts, nicht nur €/t", val_d3:"Technische Zuverlässigkeit", val_v3:"Nachweisbare Dichtheit & Ermüdungsfestigkeit", val_d4:"Compliance & Prüfbarkeit", val_v4:"Vollständige Rückverfolgbarkeit & Dokumentenkontrolle", val_d5:"Langfristige Resilienz", val_v5:"Multi-Region/Multi-Werk-Flexibilität",
+
+        identity_title:"Unsere Identität & Positionierung", who:"Wer wir sind", what:"Was wir tun", who1:"Architekt einer ursprungskonformen Supply Chain", what1:"Rechtskonformen, nachverfolgbaren Zugang sichern", who2:"Premium-Verbindungs- & Downhole-Ingenieur", what2:"Zuverlässigkeit unter Bohrlochbedingungen sicherstellen", who3:"Kosten- & Lebenszyklus-Optimierer", what3:"Gesamteigentumskosten reduzieren", who4:"Strategischer Partner statt Lieferant", what4:"Mehrjährige Zusammenarbeit über Projekte hinweg", identity_note:"Wir liefern nicht nur Rohre. Wir gestalten Systeme, die in den Markt gelangen, sicher arbeiten und Kosten sparen.",
+
+        info_title:"Firmendaten", info_cname:"Unternehmensname", info_addr:"Adresse", info_contact:"Kontakt",
+
+        contact_title:"Kontakt", contact_sub:"Beschreiben Sie Ihr Projekt. Antwort innerhalb eines Werktags.", f_name:"Name *", f_company:"Unternehmen *", f_email:"E-Mail *", f_phone:"Telefon", f_country:"Land *", f_subject:"Betreff *", f_type:"Anfrageart", f_message:"Nachricht *", f_file:"Datei anhängen (optional)", f_consent:"Ich stimme der Verarbeitung meiner Daten zur Beantwortung zu. *", f_send:"Senden", direct_title:"Direkter Kontakt", direct_email:"E-Mail:", direct_phone:"Telefon:", direct_addr:"Adresse:", toast_ok:"Nachricht gesendet. Wir melden uns bald.", toast_err:"Fehler aufgetreten. Bitte schreiben Sie an", back_top:"Nach oben ↑", close:"Schließen", no_results:"Keine Ergebnisse"
+
+      },
+
+
+
+      /* ---------- Italian ---------- */
+
+      "it": {
+
+        nav_about:"Chi siamo", nav_solutions:"Soluzioni", nav_locations:"Sedi", nav_segments:"Segmenti", nav_engineering:"Ingegneria", nav_value:"Valore", nav_identity:"Identità", nav_info:"Dati aziendali", nav_contact:"Contatti",
+
+        hero_title:"Approvvigionamento tubi in acciaio e consegna conforme — fatto bene.",
+
+        hero_sub:"Dall’acciaieria al pozzo: origine conforme, filettatura premium e tracciabilità completa.",
+
+        cta_solutions:"Scopri le soluzioni", cta_about:"Chi siamo", chip_compliance:"Conformità d’origine",
+
+        about_title:"Chi siamo",
+
+        about_intro_1:"Pipelink Global Trading Pte. Ltd. offre soluzioni per OCTG (casing & tubing), line pipe e tubi meccanici/strutturali. Competenze chiave: integrazione supply chain, conformità d’origine, ingegneria delle connessioni premium e garanzia di consegna a livello progetto.",
+
+        about_different_title:"Non siamo un semplice trader.", about_different_sub:"Siamo un partner di soluzioni che aiuta a risolvere:",
+
+        about_point_1:"Ingresso a mercato conforme", about_point_2:"Ottimizzazione dei costi di ciclo di vita", about_point_3:"Integrità e affidabilità downhole",
+
+        about_role:"Andiamo oltre la fornitura: ingegneria, strategia d’origine, compliance e performance operativa.",
+
+        about_serve_title:"Serviamo", about_serve_list:"Compagnie nazionali, operatori E&P, oilfield service, appaltatori di completamento/foratura, EPC e produttori di attrezzature/utensili.",
+
+        challenge_title:"La sfida di mercato che risolviamo", challenge_sub:"Le politiche sull’origine variano per regione:",
+
+        tbl_market:"Tipo di mercato", tbl_restriction:"Restrizione chiave", tbl_requirement:"Requisito del cliente",
+
+        challenge_row1_market:"Accetta origine Cina", challenge_row1_rest:"Competitività di costo & consegna", challenge_row1_req:"Fornitura stabile e scalabile a prezzo ottimizzato",
+
+        challenge_row2_market:"Non accetta origine Cina / AD/CVD", challenge_row2_rest:"Conformità d’origine & audit doganali", challenge_row2_req:"Origine non cinese con piena tracciabilità & prestazioni equivalenti",
+
+        framework_title:"Framework di soluzione", framework_point_1:"Mercati aperti → vantaggio di costo & stabilità", framework_point_2:"Mercati restrittivi → COO ASEAN con prestazioni costanti", framework_note:"Prestazioni di campo identiche ovunque.",
+
+        solutions_title:"Soluzioni", solutions_sub:"Offerta end-to-end per progetti energia & infrastrutture.",
+
+        sol_1_t:"Sourcing dagli impianti", sol_1_d:"OCTG, line pipe, meccanico/strutturale da acciaierie qualificate.",
+
+        sol_2_t:"Trattamento termico (ASEAN)", sol_2_d:"Q&T, normalizzazione, distensione; piena tracciabilità & test.",
+
+        sol_3_t:"Filettatura premium", sol_3_d:"Serie PL/PH; coppia, tenuta & validazione EMI.",
+
+        sol_4_t:"Conformità d’origine", sol_4_d:"Percorsi COO ASEAN per mercati sensibili AD/CVD.",
+
+        sol_5_t:"Qualità & ispezione", sol_5_d:"CND/EMI, idro, coppia di makeup; testimoni terzi benvenuti.",
+
+        sol_6_t:"Logistica & consegna", sol_6_d:"FOB/CIF/DDP, marcatura, protettori, imballo export, dossier.",
+
+        locations_title:"Sedi & copertura", locations_sub:"Sede centrale: Singapore. Copertura: Medio Oriente, ASEAN, Sud America, Nord Asia, Africa, Nord America e alcune aree europee.",
+
+        segments_title:"Segmenti di business", seg_tbl_cat:"Categoria", seg_tbl_std:"Norme", seg_tbl_app:"Applicazioni",
+
+        seg1_title:"Segmento I — Mercati che accettano origine Cina", seg1_app1:"Perforazione, completamento, produzione & workover", seg1_app2:"Raccolta e trasporto di olio & gas", seg1_cat3:"Meccanico / Strutturale", seg1_app3:"Strutture offshore, fabbricazione, tool joints, carichi", seg1_mills_label:"Acciaierie strategiche:", seg1_k1:"Capacità e controllo delle consegne", seg1_k2:"Copertura completa di gradi e specifiche", seg1_k3:"Solidi sistemi di certificazione & QA", seg1_k4:"Competitività di costo consegnato",
+
+        seg2_title:"Segmento II — Conformità d’origine via ASEAN", seg2_intro:"Madri aggiornabili (Asia dell’Est) → Trattamento & filettatura premium (ASEAN) → COO ASEAN → Ingresso conforme nei mercati restrittivi.", seg2_tbl_proc:"Processo", seg2_tbl_cap:"Descrizione capacità tecnica", seg2_row1:"Controllo di resistenza, tenacità, fatica & corrosione", seg2_row2:"Serie PL/PH e connessioni compatibili metal-to-metal", seg2_row3:"CND / EMI / prove di coppia & tenuta / idro; testimoni terzi", seg2_row4:"Origine materiale → registri di processo → QA → COO → dossier spedizione", seg2_deliv:"Gamma fornibile:", seg2_thread:"Filettature supportate:",
+
+        eng_title:"Connessioni premium & progettazione di filetti intercambiabili", eng_value:"Ingegneria oltre la fornitura. Progettiamo/adattiamo/validiamo connessioni premium intercambiabili per:", eng_k1:"Ridurre i costi del sistema tubolare", eng_k2:"Standardizzare i tipi di connessione multi-fornitore", eng_k3:"Ridurre la complessità delle scorte", eng_k4:"Garantire makeup & tenuta sicuri e ripetibili", eng_tbl_cap:"Capacità ingegneristiche", eng_tbl_ben:"Benefici per il cliente", eng_row1c:"Filetti premium intercambiabili/compatibili", eng_row1b:"Sostituiscono connessioni proprietarie costose", eng_row2c:"Ottimizzazione geometrie di tenuta & percorsi di carico", eng_row2b:"Alta affidabilità di tenuta e coppia", eng_row3c:"Standardizzazione inter-impianto", eng_row3b:"Intercambiabilità multi-fornitore", eng_row4c:"Modelli di fatica/coppia/tenuta", eng_row4b:"Esercizio sicuro a lungo termine in pozzi complessi", eng_quote:"Non filettiamo soltanto: garantiamo la prestazione in pozzo.",
+
+        value_title:"La nostra value proposition", val_dim:"Dimensione", val_deliver:"Cosa consegniamo", val_d1:"Accesso al mercato", val_v1:"Fornitura conforme in regioni restrittive", val_d2:"Ottimizzazione dei costi", val_v2:"Costo totale di progetto, non solo €/t", val_d3:"Affidabilità tecnica", val_v3:"Integrità di tenuta e fatica verificabili", val_d4:"Compliance & auditabilità", val_v4:"Tracciabilità completa e controllo documenti", val_d5:"Resilienza operativa di lungo periodo", val_v5:"Flessibilità multi-regione/multi-impianto",
+
+        identity_title:"Identità & posizionamento", who:"Chi siamo", what:"Cosa facciamo", who1:"Architetto di supply chain conforme all’origine", what1:"Garantire ingresso legale e tracciabile", who2:"Ingegneria delle connessioni premium & downhole", what2:"Garantire affidabilità in condizioni reali", who3:"Ottimizzatore di costi & ciclo di vita", what3:"Ridurre il costo totale di possesso", who4:"Partner strategico, non fornitore", what4:"Collaborazioni multi-progetto e multi-anno", identity_note:"Non forniamo solo tubi: progettiamo sistemi pronti per il mercato, sicuri e competitivi.",
+
+        info_title:"Dettagli aziendali", info_cname:"Ragione sociale", info_addr:"Indirizzo", info_contact:"Contatto",
+
+        contact_title:"Contattaci", contact_sub:"Parlaci del tuo progetto. Rispondiamo entro un giorno lavorativo.", f_name:"Nome *", f_company:"Azienda *", f_email:"Email *", f_phone:"Telefono", f_country:"Paese *", f_subject:"Oggetto *", f_type:"Tipo di richiesta", f_message:"Messaggio *", f_file:"Allega file (opzionale)", f_consent:"Acconsento al trattamento dei miei dati per la risposta. *", f_send:"Invia", direct_title:"Contatto diretto", direct_email:"Email:", direct_phone:"Telefono:", direct_addr:"Indirizzo:", toast_ok:"Messaggio inviato. A breve ti risponderemo.", toast_err:"Si è verificato un problema. Scrivi a", back_top:"Torna su ↑", close:"Chiudi", no_results:"Nessun risultato"
+
+      },
+
+
+
+      /* ---------- Brazilian Portuguese ---------- */
+
+      "pt-BR": {
+
+        nav_about:"Sobre", nav_solutions:"Soluções", nav_locations:"Locais", nav_segments:"Segmentos", nav_engineering:"Engenharia", nav_value:"Valor", nav_identity:"Identidade", nav_info:"Dados da empresa", nav_contact:"Contato",
+
+        hero_title:"Suprimento de tubos de aço e entrega em conformidade — do jeito certo.",
+
+        hero_sub:"Da usina ao poço: origem em conformidade, roscas premium e rastreabilidade completa.",
+
+        cta_solutions:"Ver soluções", cta_about:"Sobre nós", chip_compliance:"Conformidade de origem",
+
+        about_title:"Sobre nós",
+
+        about_intro_1:"A Pipelink Global Trading Pte. Ltd. oferece soluções para OCTG (casing & tubing), dutos e tubos mecânicos/estruturais. Habilidades centrais: integração da cadeia, estratégia de origem, engenharia de conexões premium e garantia de entrega em nível de projeto.",
+
+        about_different_title:"Não somos um trader tradicional.", about_different_sub:"Somos um parceiro de soluções que ajuda clientes a resolver:",
+
+        about_point_1:"Entrada legal e conforme no mercado", about_point_2:"Otimização de custo de ciclo de vida", about_point_3:"Integridade e confiabilidade no poço",
+
+        about_role:"Vamos além do fornecimento — engenharia, estratégia de origem, compliance e desempenho operacional.",
+
+        about_serve_title:"Atendemos", about_serve_list:"Estatais, operadoras E&P, serviços petrolíferos, empreiteiros de completação/sonda, EPCs e fabricantes de equipamentos/ferramentas.",
+
+        challenge_title:"Desafio de mercado que resolvemos", challenge_sub:"As políticas de origem variam por região:",
+
+        tbl_market:"Tipo de mercado", tbl_restriction:"Restrição chave", tbl_requirement:"Requisito do cliente",
+
+        challenge_row1_market:"Aceita origem China", challenge_row1_rest:"Competitividade de custo & entrega", challenge_row1_req:"Suprimento estável e escalável com preço otimizado",
+
+        challenge_row2_market:"Não aceita origem China / AD/CVD", challenge_row2_rest:"Conformidade de origem & auditoria aduaneira", challenge_row2_req:"Origem não chinesa, rastreável, com desempenho equivalente",
+
+        framework_title:"Quadro de solução", framework_point_1:"Mercados abertos → vantagem de custo & estabilidade", framework_point_2:"Mercados restritos → COO ASEAN com consistência de desempenho", framework_note:"Garante a mesma performance em campo, independentemente do mercado.",
+
+        solutions_title:"Soluções", solutions_sub:"Oferta ponta a ponta para projetos de energia e infraestrutura.",
+
+        sol_1_t:"Suprimento de usinas", sol_1_d:"OCTG, dutos, mecânico/estrutural de usinas qualificadas.",
+
+        sol_2_t:"Tratamento térmico (ASEAN)", sol_2_d:"Q&T, normalização, alívio de tensões; total rastreabilidade & testes.",
+
+        sol_3_t:"Rosqueamento premium", sol_3_d:"Séries PL/PH; torque, vedação & validação EMI.",
+
+        sol_4_t:"Conformidade de origem", sol_4_d:"Caminhos de COO ASEAN para mercados sensíveis a AD/CVD.",
+
+        sol_5_t:"Qualidade & inspeção", sol_5_d:"END/EMI, hidrostático, torque de makeup; testemunho de terceiros.",
+
+        sol_6_t:"Logística & entrega", sol_6_d:"FOB/CIF/DDP, estêncil, protetores, embalagem de exportação, dossiê.",
+
+        locations_title:"Nossas localidades & cobertura", locations_sub:"Sede: Cingapura. Cobertura: Oriente Médio, ASEAN, América do Sul, Norte da Ásia, África, América do Norte e regiões selecionadas da Europa.",
+
+        segments_title:"Segmentos de negócio", seg_tbl_cat:"Categoria", seg_tbl_std:"Normas", seg_tbl_app:"Aplicações",
+
+        seg1_title:"Segmento I — Mercados que aceitam origem China", seg1_app1:"Perfuração, completação, produção & workover", seg1_app2:"Coleta e transporte de óleo & gás", seg1_cat3:"Mecânico / Estrutural", seg1_app3:"Estruturas offshore, fabricação, tool joints, carga", seg1_mills_label:"Usinas estratégicas:", seg1_k1:"Capacidade e prazos sob controle", seg1_k2:"Cobertura completa de graus e especificações", seg1_k3:"Sistemas sólidos de certificação & QA", seg1_k4:"Melhor custo entregue",
+
+        seg2_title:"Segmento II — Conformidade de origem via ASEAN", seg2_intro:"Tubos-mãe atualizáveis (Ásia Oriental) → Tratamento térmico & roscas premium (ASEAN) → COO ASEAN → Entrada conforme em mercados restritos.", seg2_tbl_proc:"Processo", seg2_tbl_cap:"Descrição de capacidade técnica", seg2_row1:"Controla resistência, tenacidade, fadiga & corrosão", seg2_row2:"Séries PL/PH e conexões compatíveis metal-metal", seg2_row3:"END / EMI / testes de torque & vedação / hidrostático; terceiros quando exigido", seg2_row4:"Origem → registros de processo → dados de QA → COO → dossiê de embarque", seg2_deliv:"Faixa fornecível:", seg2_thread:"Roscas suportadas:",
+
+        eng_title:"Conexões premium & projeto de roscas intercambiáveis", eng_value:"Engenharia além do fornecimento. Projetamos/adaptamos/validamos conexões premium intercambiáveis para:", eng_k1:"Reduzir custo do sistema tubular", eng_k2:"Padronizar conexões entre múltiplos fornecedores", eng_k3:"Reduzir complexidade de estoque", eng_k4:"Garantir makeup & vedação seguros e repetíveis", eng_tbl_cap:"Capacidade de engenharia", eng_tbl_ben:"Benefício ao cliente", eng_row1c:"Projeto de roscas premium compatíveis", eng_row1b:"Substitui conexões proprietárias caras", eng_row2c:"Otimização de geometria de vedação & carga", eng_row2b:"Alta confiabilidade de vedação e torque", eng_row3c:"Padronização entre usinas", eng_row3b:"Intercambiabilidade multi-fornecedor", eng_row4c:"Modelagem de fadiga/torque/vedação", eng_row4b:"Operação longa segura em ambientes complexos", eng_quote:"Não apenas roscamos — garantimos desempenho confiável no poço.",
+
+        value_title:"Nossa proposta de valor", val_dim:"Dimensão", val_deliver:"Entregamos", val_d1:"Acesso a mercado", val_v1:"Fornecimento conforme em regiões restritas", val_d2:"Otimização de custos", val_v2:"Custo total de projeto, não só $/t", val_d3:"Confiabilidade técnica", val_v3:"Vedação e fadiga verificáveis", val_d4:"Conformidade & auditabilidade", val_v4:"Rastreabilidade total e controle documental", val_d5:"Resiliência operacional de longo prazo", val_v5:"Flexibilidade multi-região/multi-usina",
+
+        identity_title:"Nossa identidade & posicionamento", who:"Quem somos", what:"O que fazemos", who1:"Arquiteto de cadeia de suprimento conforme à origem", what1:"Garantir entrada legal e rastreável", who2:"Engenharia de conexões premium & downhole", what2:"Garantir confiabilidade em poços", who3:"Otimizador de custos & ciclo de vida", what3:"Reduzir custo total de propriedade", who4:"Parceiro estratégico, não fornecedor", what4:"Parcerias multi-projeto e multi-ano", identity_note:"Não entregamos apenas tubos: projetamos sistemas prontos para o mercado, seguros e competitivos.",
+
+        info_title:"Dados da empresa", info_cname:"Nome da empresa", info_addr:"Endereço", info_contact:"Contato",
+
+        contact_title:"Fale conosco", contact_sub:"Conte-nos sobre seu projeto. Respondemos em até um dia útil.", f_name:"Nome *", f_company:"Empresa *", f_email:"E-mail *", f_phone:"Telefone", f_country:"País *", f_subject:"Assunto *", f_type:"Tipo de consulta", f_message:"Mensagem *", f_file:"Anexar arquivo (opcional)", f_consent:"Autorizo o uso dos meus dados para resposta. *", f_send:"Enviar", direct_title:"Contato direto", direct_email:"E-mail:", direct_phone:"Telefone:", direct_addr:"Endereço:", toast_ok:"Mensagem enviada. Retornaremos em breve.", toast_err:"Algo deu errado. Envie e-mail para", back_top:"Voltar ao topo ↑", close:"Fechar", no_results:"Nenhum resultado"
+
+      },
+
+
+
+      /* ---------- Colombian Spanish ---------- */
+
+      "es-CO": {
+
+        nav_about:"Quiénes somos", nav_solutions:"Soluciones", nav_locations:"Ubicaciones", nav_segments:"Segmentos", nav_engineering:"Ingeniería", nav_value:"Valor", nav_identity:"Identidad", nav_info:"Datos de la empresa", nav_contact:"Contacto",
+
+        hero_title:"Abastecimiento de tubería de acero y entrega conforme — hecho correctamente.",
+
+        hero_sub:"De la acería al pozo: origen conforme, roscado premium y trazabilidad completa.",
+
+        cta_solutions:"Explorar soluciones", cta_about:"Quiénes somos", chip_compliance:"Conformidad de origen",
+
+        about_title:"Sobre nosotros",
+
+        about_intro_1:"Pipelink Global Trading Pte. Ltd. ofrece soluciones para OCTG (casing & tubing), línea y tubos mecánicos/estructurales. Capacidades: integración de cadena, estrategia de origen, ingeniería de conexiones premium y garantía de entrega a nivel proyecto.",
+
+        about_different_title:"No somos un comerciante tradicional.", about_different_sub:"Somos un socio de soluciones que ayuda a resolver:",
+
+        about_point_1:"Entrada al mercado legal y conforme", about_point_2:"Optimización del costo en ciclo de vida", about_point_3:"Integridad y confiabilidad en pozo",
+
+        about_role:"Más allá del suministro: ingeniería, estrategia de origen, cumplimiento y desempeño operativo.",
+
+        about_serve_title:"Atendemos a", about_serve_list:"Empresas estatales, operadores E&P, servicios petroleros, contratistas de completación/perforación, EPC y fabricantes de equipos/herramientas.",
+
+        challenge_title:"Desafío de mercado que resolvemos", challenge_sub:"Las políticas de origen varían por región:",
+
+        tbl_market:"Tipo de mercado", tbl_restriction:"Restricción clave", tbl_requirement:"Requisito del cliente",
+
+        challenge_row1_market:"Acepta origen China", challenge_row1_rest:"Competitividad en costo y entrega", challenge_row1_req:"Suministro estable y escalable con precio optimizado",
+
+        challenge_row2_market:"No acepta origen China / AD/CVD", challenge_row2_rest:"Conformidad de origen y auditoría aduanera", challenge_row2_req:"Origen no chino, trazable y con desempeño equivalente",
+
+        framework_title:"Marco de solución", framework_point_1:"Mercados abiertos → ventaja de costo y estabilidad", framework_point_2:"Mercados restringidos → COO ASEAN con desempeño consistente", framework_note:"Misma performance en campo, sin importar el mercado.",
+
+        solutions_title:"Soluciones", solutions_sub:"Oferta integral para proyectos exigentes de energía e infraestructura.",
+
+        sol_1_t:"Abastecimiento de planta", sol_1_d:"OCTG, línea, mecánico/estructural de plantas calificadas.",
+
+        sol_2_t:"Tratamiento térmico (ASEAN)", sol_2_d:"Q&T, normalizado, alivio de tensiones; trazabilidad y pruebas completas.",
+
+        sol_3_t:"Roscado premium", sol_3_d:"Series PL/PH; par de apriete, sellado y validación EMI.",
+
+        sol_4_t:"Conformidad de origen", sol_4_d:"Rutas COO ASEAN para mercados sensibles a AD/CVD.",
+
+        sol_5_t:"Calidad e inspección", sol_5_d:"END/EMI, hidro, torque de make-up; testigo de terceros.",
+
+        sol_6_t:"Logística y entrega", sol_6_d:"FOB/CIF/DDP, estencilado, protectores, empaque de exportación, dossier.",
+
+        locations_title:"Ubicaciones y cobertura", locations_sub:"Sede: Singapur. Cobertura: Medio Oriente, ASEAN, Sudamérica, Asia del Norte, África, Norteamérica y regiones europeas seleccionadas.",
+
+        segments_title:"Segmentos de negocio", seg_tbl_cat:"Categoría", seg_tbl_std:"Normas", seg_tbl_app:"Aplicaciones",
+
+        seg1_title:"Segmento I — Mercados que aceptan origen China", seg1_app1:"Perforación, completación, producción y workover", seg1_app2:"Recolección y transporte de petróleo y gas", seg1_cat3:"Mecánico / Estructural", seg1_app3:"Estructuras offshore, fabricación, tool joints y carga", seg1_mills_label:"Plantas estratégicas:", seg1_k1:"Capacidad y entregas controladas", seg1_k2:"Cobertura completa de grados y especificaciones", seg1_k3:"Sistemas sólidos de certificación y QA", seg1_k4:"Competitividad de costo entregado",
+
+        seg2_title:"Segmento II — Conformidad de origen vía ASEAN", seg2_intro:"Tubos madre actualizables (Asia Oriental) → Tratamiento térmico y roscado premium (ASEAN) → COO ASEAN → Entrada conforme a mercados restringidos.", seg2_tbl_proc:"Proceso", seg2_tbl_cap:"Descripción de capacidad técnica", seg2_row1:"Controla resistencia, tenacidad, fatiga y corrosión", seg2_row2:"Series PL/PH y conexiones compatibles metal-metal", seg2_row3:"END / EMI / pruebas de torque y sellado / hidro; terceros cuando se requiera", seg2_row4:"Origen → registros de proceso → QA → COO → dossier de embarque", seg2_deliv:"Rango entregable:", seg2_thread:"Roscado soportado:",
+
+        eng_title:"Conexiones premium y diseño de roscas intercambiables", eng_value:"Ingeniería más allá del suministro. Diseñamos/adaptamos/validamos conexiones premium intercambiables para:", eng_k1:"Reducir costo del sistema tubular", eng_k2:"Estandarizar conexiones multi-proveedor", eng_k3:"Reducir complejidad del inventario", eng_k4:"Asegurar make-up y sellado seguros y repetibles", eng_tbl_cap:"Capacidad de ingeniería", eng_tbl_ben:"Beneficio para el cliente", eng_row1c:"Diseño de roscas premium intercambiables/compatibles", eng_row1b:"Sustituye conexiones propietarias de alto costo", eng_row2c:"Optimización de geometría de sellado y carga", eng_row2b:"Alta confiabilidad de sellado y torque", eng_row3c:"Estandarización entre plantas", eng_row3b:"Intercambiabilidad multi-proveedor", eng_row4c:"Modelos de fatiga/torque/sellado", eng_row4b:"Operación segura a largo plazo en pozos complejos", eng_quote:"No solo roscamos — garantizamos desempeño confiable en pozo.",
+
+        value_title:"Nuestra propuesta de valor", val_dim:"Dimensión", val_deliver:"Qué entregamos", val_d1:"Acceso al mercado", val_v1:"Suministro conforme en regiones restringidas", val_d2:"Optimización de costos", val_v2:"Costo total del proyecto, no solo $/t", val_d3:"Confiabilidad técnica", val_v3:"Sellado y fatiga verificables", val_d4:"Cumplimiento y auditabilidad", val_v4:"Trazabilidad completa y control documental", val_d5:"Resiliencia operativa de largo plazo", val_v5:"Flexibilidad multi-región/multi-planta",
+
+        identity_title:"Nuestra identidad y posicionamiento", who:"Quiénes somos", what:"Qué hacemos", who1:"Arquitecto de cadena de suministro conforme al origen", what1:"Garantizar entrada legal y trazable", who2:"Ingeniería de conexiones premium y desempeño en pozo", what2:"Garantizar confiabilidad en condiciones reales", who3:"Optimizador de costos y ciclo de vida", what3:"Reducir costo total de propiedad", who4:"Socio estratégico, no proveedor", what4:"Acompañamiento multi-proyecto y multi-año", identity_note:"No solo suministramos tubos; diseñamos sistemas listos para mercado, seguros y competitivos.",
+
+        info_title:"Datos de la empresa", info_cname:"Nombre de la empresa", info_addr:"Dirección", info_contact:"Contacto",
+
+        contact_title:"Contáctenos", contact_sub:"Cuéntenos de su proyecto. Respondemos en un día hábil.", f_name:"Nombre *", f_company:"Empresa *", f_email:"Correo *", f_phone:"Teléfono", f_country:"País *", f_subject:"Asunto *", f_type:"Tipo de consulta", f_message:"Mensaje *", f_file:"Adjuntar archivo (opcional)", f_consent:"Autorizo el uso de mis datos para responder. *", f_send:"Enviar", direct_title:"Contacto directo", direct_email:"Correo:", direct_phone:"Teléfono:", direct_addr:"Dirección:", toast_ok:"Mensaje enviado. Le responderemos pronto.", toast_err:"Ocurrió un problema. Por favor escriba a", back_top:"Volver arriba ↑", close:"Cerrar", no_results:"Sin resultados"
+
+      },
+
+
+
+      /* ---------- Hindi ---------- */
+
+      "hi": {
+
+        nav_about:"हमारे बारे में", nav_solutions:"समाधान", nav_locations:"स्थान", nav_segments:"व्यावसायिक खंड", nav_engineering:"इंजीनियरिंग", nav_value:"मूल्य", nav_identity:"पहचान", nav_info:"कंपनी विवरण", nav_contact:"संपर्क",
+
+        hero_title:"स्टील पाइप सोर्सिंग और अनुपालन डिलीवरी — सही तरीके से।",
+
+        hero_sub:"मिल से वेल तक: मूल-उत्पत्ति अनुरूप आपूर्ति, प्रीमियम थ्रेडिंग और पूर्ण ट्रेसएबिलिटी।",
+
+        cta_solutions:"समाधान देखें", cta_about:"हमारे बारे में", chip_compliance:"उत्पत्ति अनुपालन",
+
+        about_title:"हमारे बारे में",
+
+        about_intro_1:"Pipelink Global Trading Pte. Ltd. OCTG (Casing & Tubing), लाइन पाइप और यांत्रिक/स्ट्रक्चरल पाइप के लिए समाधान प्रदान करती है। मुख्य क्षमताएँ: सप्लाई-चेन एकीकरण, उत्पत्ति अनुपालन, प्रीमियम कनेक्शन इंजीनियरिंग और परियोजना-स्तरीय डिलीवरी आश्वासन।",
+
+        about_different_title:"हम पारंपरिक ट्रेडिंग कंपनी नहीं हैं।", about_different_sub:"हम समाधान भागीदार हैं जो ग्राहकों की चुनौतियाँ सुलझाते हैं:",
+
+        about_point_1:"कानूनी व अनुपालक मार्केट एंट्री", about_point_2:"लाइफ-साइकल कॉस्ट ऑप्टिमाइज़ेशन", about_point_3:"डाउनहोल इंटेग्रिटी व विश्वसनीयता",
+
+        about_role:"हमारी भूमिका सप्लाई से आगे जाती है — इंजीनियरिंग, उत्पत्ति रणनीति, अनुपालन और ऑपरेशनल परफ़ॉर्मेंस।",
+
+        about_serve_title:"हम सेवा देते हैं", about_serve_list:"राष्ट्रीय तेल कंपनियाँ, E&P ऑपरेटर, ऑयलफील्ड सर्विस, कम्प्लीशन/ड्रिलिंग कॉन्ट्रैक्टर, EPC और उपकरण/टूल निर्माता।",
+
+        challenge_title:"हम जो बाज़ार चुनौती सुलझाते हैं", challenge_sub:"क्षेत्रों के अनुसार उत्पत्ति-नीति अलग होती है:",
+
+        tbl_market:"बाज़ार प्रकार", tbl_restriction:"मुख्य प्रतिबंध", tbl_requirement:"ग्राहक आवश्यकता",
+
+        challenge_row1_market:"चीन मूल स्वीकार", challenge_row1_rest:"क़ीमत व डिलीवरी प्रतिस्पर्धा", challenge_row1_req:"स्थिर, स्केलेबल, किफ़ायती आपूर्ति",
+
+        challenge_row2_market:"चीन मूल अस्वीकार / AD/CVD", challenge_row2_rest:"उत्पत्ति अनुपालन व कस्टम ऑडिट", challenge_row2_req:"ग़ैर-चीन मूल, पूर्ण ट्रेसएबिलिटी व समकक्ष प्रदर्शन",
+
+        framework_title:"समाधान ढांचा", framework_point_1:"खुले बाज़ार → लागत लाभ व मात्रा स्थिरता", framework_point_2:"सीमित बाज़ार → ASEAN मूल-प्रमाण के साथ सुसंगत प्रदर्शन", framework_note:"किसी भी बाज़ार में वही फ़ील्ड-परफ़ॉर्मेंस सुनिश्चित करता है।",
+
+        solutions_title:"समाधान", solutions_sub:"ऊर्जा व अवसंरचना परियोजनाओं के लिए एंड-टू-एंड ऑफ़रिंग।",
+
+        sol_1_t:"मिल सोर्सिंग", sol_1_d:"क्वॉलिफ़ाइड मिलों से OCTG, लाइन पाइप, यांत्रिक/स्ट्रक्चरल पाइप।",
+
+        sol_2_t:"हीट ट्रीटमेंट (ASEAN)", sol_2_d:"Q&T, नॉर्मलाइज़, स्ट्रेस-रिलीफ़; पूरी ट्रेसएबिलिटी व परीक्षण।",
+
+        sol_3_t:"प्रीमियम थ्रेडिंग", sol_3_d:"PL/PH सीरीज़; टॉर्क, सील परफ़ॉर्मेंस व EMI वैलिडेशन।",
+
+        sol_4_t:"उत्पत्ति अनुपालन", sol_4_d:"AD/CVD संवेदनशील बाज़ारों हेतु ASEAN COO मार्ग।",
+
+        sol_5_t:"गुणवत्ता व निरीक्षण", sol_5_d:"NDT/EMI, हाइड्रो, मेक-अप टॉर्क; तृतीय-पक्ष साक्षी स्वागतयोग्य।",
+
+        sol_6_t:"लॉजिस्टिक्स व डिलीवरी", sol_6_d:"FOB/CIF/DDP, स्टेंसिलिंग, प्रोटेक्टर्स, निर्यात पैकिंग, डॉसियर।",
+
+        locations_title:"हमारे स्थान व कवरेज", locations_sub:"मुख्यालय: सिंगापुर। कवरेज: मध्य-पूर्व, ASEAN, दक्षिण अमेरिका, उत्तर-एशिया, अफ्रीका, उत्तर-अमेरिका और चयनित यूरोपीय क्षेत्र।",
+
+        segments_title:"व्यावसायिक खंड", seg_tbl_cat:"उत्पाद श्रेणी", seg_tbl_std:"मानक", seg_tbl_app:"सामान्य उपयोग",
+
+        seg1_title:"खंड I — बाज़ार जो चीन मूल स्वीकारते हैं", seg1_app1:"ड्रिलिंग, कम्प्लीशन, प्रोडक्शन व वर्कओवर", seg1_app2:"तेल-गैस संग्रहण व परिवहन", seg1_cat3:"यांत्रिक / स्ट्रक्चरल", seg1_app3:"ऑफ़शोर संरचनाएँ, फेब्रिकेशन, टूल जॉइंट, लोड-बेयरिंग", seg1_mills_label:"रणनीतिक इस्पात मिलें:", seg1_k1:"नियंत्रित क्षमता व डिलीवरी", seg1_k2:"ग्रेड्स/स्पेक्स की पूर्ण कवरेज", seg1_k3:"मज़बूत प्रमाणन व QA दस्तावेज़", seg1_k4:"उत्कृष्ट डिलिवर्ड-कॉस्ट प्रतिस्पर्धा",
+
+        seg2_title:"खंड II — ASEAN के माध्यम से मूल-अनुपालन", seg2_intro:"अपग्रेडेबल मदर-पाइप (पूर्व एशिया) → हीट ट्रीटमेंट व प्रीमियम थ्रेडिंग (ASEAN) → ASEAN COO → सीमित बाज़ारों में अनुपालक प्रवेश।", seg2_tbl_proc:"प्रक्रिया", seg2_tbl_cap:"तकनीकी क्षमता विवरण", seg2_row1:"मजबूती, टफ़नेस, थकान व जंग-प्रतिरोध नियंत्रण", seg2_row2:"PL/PH सीरीज़ व संगत मेटल-टू-मेटल सील", seg2_row3:"NDT / EMI / टॉर्क-सील परीक्षण / हाइड्रो; ज़रूरत पर तृतीय-पक्ष", seg2_row4:"सामग्री-उत्पत्ति → प्रक्रिया-रिकॉर्ड → QA → COO → शिपिंग डॉसियर", seg2_deliv:"डिलिवरेबल रेंज:", seg2_thread:"समर्थित थ्रेडिंग:",
+
+        eng_title:"प्रीमियम कनेक्शन व इंटरचेन्जेबल थ्रेड डिज़ाइन क्षमता", eng_value:"सप्लाई से आगे की इंजीनियरिंग: हम इंटरचेन्जेबल/कम्पैटिबल प्रीमियम कनेक्शन डिज़ाइन/वैलिडेट करते हैं ताकि ग्राहक:", eng_k1:"ट्यूबुलर सिस्टम-कॉस्ट घटाएँ", eng_k2:"मल्टी-सोर्स कनेक्शन प्रकार मानकीकृत करें", eng_k3:"इन्वेंटरी जटिलता कम करें", eng_k4:"सुरक्षित व दोहराने योग्य मेक-अप/सीलिंग सुनिश्चित करें", eng_tbl_cap:"इंजीनियरिंग क्षमता", eng_tbl_ben:"ग्राहक लाभ", eng_row1c:"इंटरचेन्जेबल/कम्पैटिबल प्रीमियम थ्रेड डिज़ाइन", eng_row1b:"महँगी स्वामित्व-कनेक्शन का विकल्प", eng_row2c:"सील ज्योमेट्री व लोड-पाथ अनुकूलन", eng_row2b:"उच्च सील/टॉर्क विश्वसनीयता", eng_row3c:"क्रॉस-मिल इंटरफेस मानकीकरण", eng_row3b:"मल्टी-सप्लायर इंटरचेन्जेबिलिटी", eng_row4c:"फटीग/टॉर्क/सील मॉडलिंग", eng_row4b:"जटिल कुओं में दीर्घकालिक सुरक्षित संचालन", eng_quote:"हम सिर्फ थ्रेड नहीं काटते — हम विश्वसनीय डाउनहोल प्रदर्शन सुनिश्चित करते हैं।",
+
+        value_title:"हमारा रणनीतिक मूल्य-प्रस्ताव", val_dim:"आयाम", val_deliver:"हम क्या देते हैं", val_d1:"मार्केट एक्सेस", val_v1:"सीमित क्षेत्रों में अनुपालक आपूर्ति", val_d2:"कॉस्ट ऑप्टिमाइज़ेशन", val_v2:"सिर्फ ₹/टन नहीं, कुल परियोजना लागत", val_d3:"तकनीकी विश्वसनीयता", val_v3:"जाँची जा सकने वाली सील/फटीग परफ़ॉर्मेंस", val_d4:"अनुपालन व ऑडिटेबिलिटी", val_v4:"पूर्ण ट्रेसएबिलिटी व दस्तावेज़ नियंत्रण", val_d5:"दीर्घकालिक परिचालन लचीलापन", val_v5:"मल्टी-रीजन/मल्टी-प्लांट विकल्प",
+
+        identity_title:"हमारी पहचान व पोज़िशनिंग", who:"हम कौन हैं", what:"हम क्या करते हैं", who1:"उत्पत्ति-अनुपालन सप्लाई-चेन आर्किटेक्ट", what1:"कानूनी व ट्रेसएबल एंट्री सुनिश्चित करना", who2:"प्रीमियम कनेक्शन व डाउनहोल इंजीनियर", what2:"वास्तविक परिस्थितियों में विश्वसनीयता", who3:"लागत व लाइफ-साइकल ऑप्टिमाइज़र", what3:"कुल स्वामित्व-लागत घटाना", who4:"स्ट्रैटेजिक पार्टनर, सप्लायर नहीं", what4:"बहु-परियोजना/बहु-वर्ष सहयोग", identity_note:"हम केवल पाइप नहीं देते—हम ऐसे सिस्टम डिज़ाइन करते हैं जो बाज़ार-योग्य, सुरक्षित और प्रतिस्पर्धी हों।",
+
+        info_title:"कंपनी विवरण", info_cname:"कंपनी नाम", info_addr:"पता", info_contact:"संपर्क",
+
+        contact_title:"संपर्क करें", contact_sub:"अपने प्रोजेक्ट के बारे में बताएँ। हम एक कार्य-दिवस में उत्तर देंगे।", f_name:"नाम *", f_company:"कंपनी *", f_email:"ईमेल *", f_phone:"फ़ोन", f_country:"देश *", f_subject:"विषय *", f_type:"पूछताछ प्रकार", f_message:"संदेश *", f_file:"फ़ाइल संलग्न (वैकल्पिक)", f_consent:"उत्तर हेतु मेरे विवरण के उपयोग से सहमत हूँ। *", f_send:"भेजें", direct_title:"प्रत्यक्ष संपर्क", direct_email:"ईमेल:", direct_phone:"फ़ोन:", direct_addr:"पता:", toast_ok:"संदेश भेजा गया। हम शीघ्र उत्तर देंगे।", toast_err:"कुछ गड़बड़ हुई। कृपया ईमेल करें", back_top:"ऊपर जाएँ ↑", close:"बंद करें", no_results:"कोई परिणाम नहीं"
+
+      }
+
+    };
+
+
+
+    /* Render language menu dynamically */
+
+    const langBtn = document.getElementById('langBtn');
+
+    const langMenu = document.getElementById('langMenu');
+
+    const langList = document.getElementById('langList');
+
+    const langLabel = document.getElementById('langLabel');
+
+
+
+    function renderLangMenu(active){
+
+      langList.innerHTML = LANGS.map((l,idx)=>`
+
+        <button class="lang-item ${l.id===active?'active':''}" role="menuitem" tabindex="0" data-index="${idx}" data-lang="${l.id}">
+
+          <span class="lang-left">
+
+            <span>${l.label}</span>
+
+            <span class="lang-check">✓</span>
+
+          </span>
+
+          <span class="lang-code">${l.code}</span>
+
+        </button>
+
+      `).join('');
+
+      // click handlers
+
+      langList.querySelectorAll('.lang-item').forEach(btn=>{
+
+        // handled via delegated click below
+
+      });
+
+    }
+
+
+
+    function openLangMenu(){
+
+      langMenu.classList.add('open'); langBtn.setAttribute('aria-expanded','true');
+
+      // focus active item
+
+      const active = langList.querySelector('.lang-item.active') || langList.querySelector('.lang-item');
+
+      active?.focus();
+
+    }
+
+    function closeLangMenu(){
+
+      langMenu.classList.remove('open');
+
+      langBtn.setAttribute('aria-expanded','false');
+
+      // Do not refocus the button to avoid stealing focus from inputs
+
+    }
+
+    langBtn.addEventListener('click', (e)=>{
+
+      e.stopPropagation();
+
+      if (langMenu.classList.contains('open')) closeLangMenu(); else openLangMenu();
+
+    });
+
+    document.addEventListener('click', (e)=>{
+
+      if (!langMenu.contains(e.target) && !langBtn.contains(e.target)) closeLangMenu();
+
+    });
+
+    document.addEventListener('keydown', (e)=>{
+
+      if (!langMenu.classList.contains('open')) return;
+
+      const items = Array.from(langList.querySelectorAll('.lang-item'));
+
+      const current = document.activeElement;
+
+      const idx = items.indexOf(current);
+
+      if (e.key==='Escape'){ closeLangMenu(); }
+
+      else if (e.key==='ArrowDown'){ e.preventDefault(); items[Math.min(items.length-1, idx+1)]?.focus(); }
+
+      else if (e.key==='ArrowUp'){ e.preventDefault(); items[Math.max(0, idx-1)]?.focus(); }
+
+      else if (e.key==='Enter'){ current?.click(); }
+
+    });
+
+
+
+    /* LANGUAGE SWITCHER (class-based) */
+
+    // start hidden via classes; JS toggles opacity/pointer-events
+
+    langMenu.classList.add('opacity-0', 'pointer-events-none');
+
+    langBtn.addEventListener('click', (e) => {
+
+      e.stopPropagation();
+
+      langMenu.classList.toggle('opacity-0');
+
+      langMenu.classList.toggle('pointer-events-none');
+
+    });
+
+    document.addEventListener('click', (e) => {
+
+      if (!langMenu.contains(e.target) && !langBtn.contains(e.target)) {
+
+        langMenu.classList.add('opacity-0', 'pointer-events-none');
+
+      }
+
+    });
+
+    document.querySelectorAll('input, textarea, select').forEach(el => {
+
+      el.addEventListener('focus', () => {
+
+        langMenu.classList.add('opacity-0', 'pointer-events-none');
+
+      });
+
+    });
+
+    langMenu.addEventListener('click', (e) => {
+
+      const btn = e.target.closest('[data-lang]');
+
+      if (!btn) return;
+
+      const lang = btn.dataset.lang;
+
+      if (lang) applyLang(lang);
+
+      langMenu.classList.add('opacity-0', 'pointer-events-none');
+
+    });
+
+
+
+    /* Mobile menu (standardized) */
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileBack = document.getElementById('mobileMenuBack');
+    function lockScroll(lock){
+      document.documentElement.classList.toggle('overflow-hidden', !!lock);
+      document.body.classList.toggle('overflow-hidden', !!lock);
+    }
+    function closeMobile(){
+      if(!mobileMenu) return;
+      mobileMenu.classList.add('hidden');
+      mobileMenu.setAttribute('aria-hidden','true');
+      if(mobileBtn) mobileBtn.setAttribute('aria-expanded','false');
+      lockScroll(false);
+    }
+    function openMobile(){
+      if(!mobileMenu) return;
+      mobileMenu.classList.remove('hidden');
+      mobileMenu.setAttribute('aria-hidden','false');
+      if(mobileBtn) mobileBtn.setAttribute('aria-expanded','true');
+      lockScroll(true);
+    }
+    mobileBtn?.addEventListener('click', ()=>{
+      if (mobileMenu.classList.contains('hidden')) openMobile(); else closeMobile();
+    });
+    mobileBack?.addEventListener('click', closeMobile);
+    mobileMenu?.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeMobile));
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMobile(); });
+    // End standardized mobile menu
+
+
+
+    /* Safe i18n helpers to avoid [object Object] */
+
+    function t(lang, key){
+
+      const v = (L[lang] && L[lang][key] !== undefined) ? L[lang][key] : (L.en && L.en[key]);
+
+      return (typeof v === 'string' || typeof v === 'number') ? String(v) : null;
+
+    }
+
+    function applyLang(lang){
+
+      // update DOM
+
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+
+        const key = el.getAttribute('data-i18n');
+
+        const val = t(lang, key);
+
+        if (val !== null) el.innerHTML = val; // only write strings
+
+      });
+
+      // lang attribute + label
+
+      document.documentElement.lang = lang.startsWith('zh') ? 'zh' : lang;
+
+      langLabel.textContent = (lang==='zh-CN'?'简':lang==='zh-TW'?'繁':LANGS.find(x=>x.id===lang)?.code || lang.toUpperCase());
+
+      localStorage.setItem('pipelink_lang', lang);
+
+
+
+      // refresh menu selection
+
+      renderLangMenu(lang);
+
+    }
+
+
+
+    // Initial language (persisted or auto-detect once)
+
+    const firstStored = localStorage.getItem('pipelink_lang');
+
+    const guess = (navigator.language||'en').toLowerCase();
+
+    const initial = firstStored || (L[guess] ? guess : (guess.startsWith('zh') ? 'zh-CN' : 'en'));
+
+    renderLangMenu(initial);
+
+    applyLang(initial);
+
+
+
+  </script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

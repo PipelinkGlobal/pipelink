@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About – Pipelink Global Trading</title>
+
+  <link rel="icon" href="images/pipelink-icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="images/pipelink-icon.png" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --pl-navy:rgba(8,14,4,1); --pl-blue-600:#3e9cfe;
+      /* bring over old-map palette */
+      --pl-red:#ef4444; --pl-green:#22c55e;
+    }
+    html{ -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility; scroll-behavior:smooth }
+    body{ font-family:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial; font-size:18px; line-height:1.7 }
+    .container{ max-width:1280px; margin-inline:auto }
+    .card{ background:#fff; border:1px solid rgba(15,23,42,.08); border-radius:1rem; box-shadow:0 8px 24px rgba(2,6,23,.06) }
+    .section-title{ font-weight:800; letter-spacing:.1px }
+    .section-title::after{ content:""; display:block; width:92px; height:3px; margin-top:.65rem; background:linear-gradient(90deg,#2563eb,#60a5fa) }
+    a{ color:inherit; text-decoration-thickness:1px; text-underline-offset:3px }
+
+    /* Header */
+    #siteHeader{ transition:background-color .25s,border-color .25s,color .25s,box-shadow .25s }
+    #siteHeader.on-hero{ background:var(--pl-navy); color:#fff }
+    #siteHeader.scrolled{ background:rgba(255,255,255,.9); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid #e5e7eb; box-shadow:0 6px 18px rgba(2,6,23,.08) }
+    #siteHeader .nav-link{ position:relative; text-decoration:none }
+    #siteHeader .nav-link::after{ content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; background:transparent; transition:background .2s }
+    #siteHeader .nav-link:hover::after{ background:currentColor }
+
+    /* Simple hover dropdown for md+ */
+    .nav-group{ position:relative }
+    .nav-group .nav-panel{ display:none; position:absolute; left:0; top:100%; background:#fff; border:1px solid #e5e7eb; border-radius:.75rem; box-shadow:0 12px 24px rgba(2,6,23,.12); margin-top:.35rem; min-width:12rem; overflow:hidden; z-index:50 }
+    .nav-group .nav-panel a{ display:block; padding:.6rem .9rem; font-size:.9rem }
+    .nav-group .nav-panel a:hover{ background:#f8fafc }
+    @media (min-width:768px){ .nav-group:hover .nav-panel{ display:block } }
+    @media (min-width:768px){ .nav-group.open .nav-panel{ display:block } }
+
+    /* Search overlay */
+    #searchOverlay{ position:fixed; inset:0; background:rgba(15,23,42,.6); backdrop-filter:blur(3px); display:none; z-index:80 }
+    #searchOverlay.open{ display:block }
+    .search-panel{ background:#fff; border:1px solid #e5e7eb; border-radius:1rem; box-shadow:0 8px 24px rgba(2,6,23,.06); overflow:hidden }
+    .search-row{ display:flex; align-items:center; gap:.5rem; padding:.5rem .5rem .5rem .75rem; border-bottom:1px solid #e5e7eb }
+    .search-input{ flex:1; padding:.6rem .75rem; border:1px solid #e5e7eb; border-radius:.6rem }
+    .search-results a:hover{ background:#f8fafc }
+
+    /* Map layer + always-visible labels */
+    #mapWrap{ position:relative; overflow:hidden }
+    #pins{ position:absolute; inset:0; pointer-events:none; z-index:2 }
+    /* Marker: dot + label to the right */
+    .marker{ position:absolute; left:0; top:0; transform:translate(-50%,-50%); display:inline-flex; align-items:center; gap:.4rem }
+    .marker .dot{ width:12px; height:12px; border-radius:9999px; background:var(--pl-blue-600); box-shadow:0 0 0 3px rgba(62,156,254,.25) }
+    .marker[data-type="hq"] .dot{ background:var(--pl-navy); box-shadow:0 0 0 3px rgba(2,28,61,.25) }
+    .marker .text{ font-size:12px; color:#0f172a; background:rgba(255,255,255,.96); border:1px solid #e5e7eb; padding:.2rem .45rem; border-radius:.4rem; white-space:nowrap; box-shadow:0 6px 16px rgba(2,6,23,.1) }
+
+    /* Reveal on scroll */
+    .reveal{ opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease; will-change:opacity, transform }
+    .reveal[data-reveal-from="left"]{ transform:translateX(-16px) }
+    .reveal[data-reveal-from="right"]{ transform:translateX(16px) }
+    .reveal.show{ opacity:1; transform:none }
+
+    /* Timeline (kept if you add later) */
+    .timeline{ position:relative; padding-left:2.5rem }
+    .timeline::before{ content:""; position:absolute; left:1rem; top:0; bottom:0; width:2px; background:linear-gradient(#bfdbfe,#2563eb); transform-origin:top; transform:scaleY(var(--line,0)); transition:transform 900ms ease 150ms }
+    .tl-item{ position:relative; margin-bottom:2rem; opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease }
+    .timeline.in .tl-item{ opacity:1; transform:none }
+    .tl-dot{ position:absolute; left:0; top:.2rem; transform:translate(-.05rem, .2rem); background:#2563eb; border-radius:9999px; height:14px; width:14px; box-shadow:0 0 0 4px rgba(37,99,235,.18); transition:transform .45s ease }
+    .timeline.in .tl-dot{ transform:translate(-.05rem, .2rem) scale(1.12) }
+
+    @media (prefers-reduced-motion: reduce){
+      .reveal{ transition:none }
+      .tl-item{ transition:none }
+      html{ scroll-behavior:auto }
+    }
+  </style>
+  <!-- Optional assets -->
+  <script defer src="assets/site.js"></script>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body class="text-slate-800 bg-white text-[18px] leading-7">
+  <!-- Header -->
+  <header id="siteHeader" class="sticky top-0 z-50 on-hero">
+    <div class="container px-4">
+      <div class="h-16 flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-3 shrink-0">
+          <img src="images/pipelink-icon.png" alt="Pipelink icon" class="w-9 h-9 rounded-full ring-2 ring-blue-500/30" />
+          <span class="brand font-semibold whitespace-nowrap">Pipelink Global Trading</span>
+        </a>
+        <button id="mobileMenuBtn" type="button" class="md:hidden ms-auto px-3 py-1.5 rounded-lg border text-sm" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open menu">Menu</button>
+        <nav class="hidden md:flex items-center gap-6 text-sm ms-auto" aria-label="Primary">
+          <a href="index.html" class="nav-link">Home</a>
+          <div class="nav-group">
+            <a href="about.html" class="nav-link" aria-haspopup="true" aria-expanded="false">About</a>
+            <div class="nav-panel" role="menu">
+              <a href="#about" role="menuitem">About Us</a>
+              <a href="#locations" role="menuitem">Our Location</a>
+              <a href="#value" role="menuitem">Our Value</a>
+              <a href="#identity" role="menuitem">Our Identity</a>
+            </div>
+          </div>
+          <div class="nav-group">
+            <a href="engineering.html" class="nav-link" aria-haspopup="true" aria-expanded="false">Engineering</a>
+            <div class="nav-panel" role="menu">
+              <a href="engineering.html#segments" role="menuitem">Business</a>
+              <a href="engineering.html#products" role="menuitem">Our Products</a>
+            </div>
+          </div>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="contact.html" class="contact-cta">Contact</a>
+          <button id="openSearch" type="button" class="px-3 py-1.5 rounded-lg border" aria-haspopup="dialog" aria-controls="searchOverlay" aria-expanded="false" aria-label="Open search">🔎</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu (standardized) -->
+  <div id="mobileMenu" class="fixed inset-0 z-[55] hidden" aria-hidden="true">
+    <div id="mobileMenuBack" class="absolute inset-0 bg-slate-900/40" aria-hidden="true"></div>
+    <div class="absolute top-16 left-0 right-0 bg-white border-b shadow-lg">
+      <div class="container px-4 py-3">
+        <nav class="grid gap-2 text-sm" aria-label="Mobile">
+          <a href="index.html" class="px-2 py-2 rounded hover:bg-gray-50">Home</a>
+          <a href="about.html" class="px-2 py-2 rounded hover:bg-gray-50">About</a>
+          <div class="ms-3">
+            <a href="about.html#about" class="block px-2 py-1 text-gray-600">Our Story</a>
+            <a href="about.html#locations" class="block px-2 py-1 text-gray-600">Our Location</a>
+            <a href="about.html#value" class="block px-2 py-1 text-gray-600">Our Value</a>
+            <a href="about.html#identity" class="block px-2 py-1 text-gray-600">Our Identity</a>
+          </div>
+          <a href="engineering.html" class="px-2 py-2 rounded hover:bg-gray-50">Engineering</a>
+          <div class="ms-3">
+            <a href="engineering.html#segments" class="block px-2 py-1 text-gray-600">Business</a>
+            <a href="engineering.html#products" class="block px-2 py-1 text-gray-600">Our Products</a>
+          </div>
+          <a href="services.html" class="px-2 py-2 rounded hover:bg-gray-50">Services</a>
+          <a href="contact.html" class="px-2 py-2 rounded bg-blue-600 text-white text-center">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <main id="top">
+    <!-- Hero -->
+    <section id="hero" class="relative overflow-hidden text-white" style="background:linear-gradient(180deg,#021c3d,#3e9cfe)">
+      <div class="container px-6 py-14">
+        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">About Us</h1>
+        <p class="text-white/90 mt-2">Identity, value, and global locations.</p>
+      </div>
+      <div id="hero-sentinel" class="absolute bottom-0 left-0 right-0 h-[1px]"></div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-20 bg-gray-50">
+      <div class="container px-6">
+        <h2 class="section-title text-3xl" data-i18n="about_title">About Us</h2>
+        <div class="mt-6 grid lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-7 card p-6 md:p-8">
+            <p data-i18n="about_intro_1"><strong>Pipelink Global Trading Pte. Ltd.</strong> is a specialized provider of <em>OCTG (Casing &amp; Tubing), Line Pipe, and Mechanical/Structural Pipe</em> solutions. Our core capabilities include supply chain integration, origin compliance structuring, premium connection engineering, and project-level delivery assurance.</p>
+            <div class="mt-6">
+              <h3 class="font-semibold text-lg" data-i18n="about_different_title">We are not a traditional trading company.</h3>
+              <p data-i18n="about_different_sub">We are a solutions partner that helps customers address:</p>
+              <ul class="grid md:grid-cols-3 gap-3 mt-3 text-[15px]">
+                <li class="rounded-lg border p-3 bg-white" data-i18n="about_point_1">Legal &amp; compliant market entry</li>
+                <li class="rounded-lg border p-3 bg-white" data-i18n="about_point_2">Life-cycle cost optimization</li>
+                <li class="rounded-lg border p-3 bg-white" data-i18n="about_point_3">Downhole integrity &amp; reliability</li>
+              </ul>
+              <p class="mt-3" data-i18n="about_role">Our role extends beyond supply — into engineering, origin strategy, compliance assurance, and operational performance support.</p>
+            </div>
+            <div class="mt-6">
+              <h3 class="font-semibold text-lg" data-i18n="about_serve_title">We serve</h3>
+              <p data-i18n="about_serve_list">National oil companies, E&amp;P operators, international oilfield service providers, drilling &amp; completion contractors, EPC firms, and equipment/tool manufacturers.</p>
+            </div>
+          </div>
+          <div class="lg:col-span-5 card p-6 md:p-8">
+            <h3 class="font-semibold text-lg" data-i18n="challenge_title">Market Challenge We Solve</h3>
+            <p class="mt-2 text-gray-700" data-i18n="challenge_sub">Different regions have different policies toward country of origin:</p>
+            <div class="mt-4 overflow-auto">
+              <table class="min-w-full text-[15px] border">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th class="px-3 py-2 text-left border" data-i18n="tbl_market">Market Type</th>
+                    <th class="px-3 py-2 text-left border" data-i18n="tbl_restriction">Key Restriction</th>
+                    <th class="px-3 py-2 text-left border" data-i18n="tbl_requirement">Customer Requirement</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="px-3 py-2 border" data-i18n="challenge_row1_market">Accept China origin</td>
+                    <td class="px-3 py-2 border" data-i18n="challenge_row1_rest">Cost &amp; delivery competitiveness</td>
+                    <td class="px-3 py-2 border" data-i18n="challenge_row1_req">Stable, scalable supply at optimized pricing</td>
+                  </tr>
+                  <tr>
+                    <td class="px-3 py-2 border" data-i18n="challenge_row2_market">Do not accept China origin / apply AD/CVD</td>
+                    <td class="px-3 py-2 border" data-i18n="challenge_row2_rest">Origin compliance &amp; customs audit</td>
+                    <td class="px-3 py-2 border" data-i18n="challenge_row2_req">Non-China origin with full traceability &amp; equal performance</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-3">
+              <h4 class="font-semibold" data-i18n="framework_title">Our solution framework</h4>
+              <ul class="list-disc ms-5 mt-1">
+                <li data-i18n="framework_point_1">For accepting markets — cost advantage &amp; volume stability</li>
+                <li data-i18n="framework_point_2">For restricted markets — Southeast Asia origin compliance with performance consistency</li>
+              </ul>
+              <p class="mt-2" data-i18n="framework_note">This ensures customers achieve the same field performance, regardless of market restrictions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Locations (old map logic) -->
+    <section id="locations" class="py-20 bg-gray-50">
+      <div class="container px-6">
+        <h2 class="section-title text-3xl" data-i18n="locations_title">Our Locations &amp; Coverage</h2>
+        <p class="mt-3 text-gray-700 max-w-3xl" data-i18n="locations_sub">Headquarters: Singapore. Coverage includes the Middle East, Southeast Asia, South America, North Asia, Africa, North America, and selected European regions.</p>
+        <div id="mapWrap" class="mt-10 card p-2">
+          <img id="worldMap" src="images/world-hires.jpg" alt="World map" class="w-full h-auto block select-none pointer-events-none rounded-lg" />
+          <div id="pins"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Value & Identity -->
+    <section id="value" class="py-20">
+      <div class="container px-6">
+        <h2 class="section-title text-3xl" data-i18n="value_title">Our Strategic Value Proposition</h2>
+        <div class="card p-6 md:p-8">
+          <div class="overflow-auto">
+            <table class="min-w-full text-[15px] border">
+              <thead class="bg-gray-100"><tr><th class="px-3 py-2 text-left border" data-i18n="val_dim">Dimension</th><th class="px-3 py-2 text-left border" data-i18n="val_deliver">What We Deliver</th></tr></thead>
+              <tbody>
+                <tr><td class="px-3 py-2 border" data-i18n="val_d1">Market Access</td><td class="px-3 py-2 border" data-i18n="val_v1">Origin-compliant supply into restricted regions</td></tr>
+                <tr><td class="px-3 py-2 border" data-i18n="val_d2">Cost Optimization</td><td class="px-3 py-2 border" data-i18n="val_v2">Optimization of total project cost, not just per-ton pricing</td></tr>
+                <tr><td class="px-3 py-2 border" data-i18n="val_d3">Technical Reliability</td><td class="px-3 py-2 border" data-i18n="val_v3">Downhole seal integrity and fatigue performance you can validate</td></tr>
+                <tr><td class="px-3 py-2 border" data-i18n="val_d4">Compliance &amp; Auditability</td><td class="px-3 py-2 border" data-i18n="val_v4">Full traceability and documentation control</td></tr>
+                <tr><td class="px-3 py-2 border" data-i18n="val_d5">Long-Term Operational Resilience</td><td class="px-3 py-2 border" data-i18n="val_v5">Multi-region, multi-plant supply flexibility and backup capacity</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <section id="identity" class="mt-8">
+          <h3 class="section-title text-2xl" data-i18n="identity_title">Our Identity &amp; Positioning</h3>
+          <div class="mt-4 grid lg:grid-cols-2 gap-6">
+            <div class="card p-6 md:p-8">
+              <div class="overflow-auto">
+                <table class="min-w-full text-[15px] border">
+                  <thead class="bg-gray-100"><tr><th class="px-3 py-2 text-left border" data-i18n="who">Who We Are</th><th class="px-3 py-2 text-left border" data-i18n="what">What We Do</th></tr></thead>
+                  <tbody>
+                    <tr><td class="px-3 py-2 border" data-i18n="who1">Origin Compliance Supply Chain Architect</td><td class="px-3 py-2 border" data-i18n="what1">Ensure legal &amp; traceable market entry</td></tr>
+                    <tr><td class="px-3 py-2 border" data-i18n="who2">Premium Connection &amp; Downhole Performance Engineer</td><td class="px-3 py-2 border" data-i18n="what2">Guarantee system reliability under well conditions</td></tr>
+                    <tr><td class="px-3 py-2 border" data-i18n="who3">Cost &amp; Life-Cycle Efficiency Optimizer</td><td class="px-3 py-2 border" data-i18n="what3">Reduce long-term tubular ownership cost</td></tr>
+                    <tr><td class="px-3 py-2 border" data-i18n="who4">Strategic Partner, not a Vendor</td><td class="px-3 py-2 border" data-i18n="what4">Work with customers across multiple projects and years</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card p-6 md:p-8"><p data-i18n="identity_note">We do not just supply pipes. We design tubular systems that can enter the market, operate safely, and deliver sustainable cost advantage.</p></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Company Info -->
+    <section id="info" class="py-20 bg-gray-50">
+      <div class="container px-6">
+        <h2 class="section-title text-3xl" data-i18n="info_title">Company Details</h2>
+        <div class="mt-6 grid md:grid-cols-2 gap-6">
+          <div class="card p-6 md:p-8">
+            <dl class="space-y-2">
+              <div><dt class="font-semibold" data-i18n="info_cname">Company Name</dt><dd>Pipelink Global Trading Pte. Ltd</dd></div>
+              <div><dt class="font-semibold" data-i18n="info_addr">Address</dt><dd>60 Paya Lebar Road, #07-54, Paya Lebar Square, Singapore 409051</dd></div>
+              <div><dt class="font-semibold">UEN</dt><dd>202510504C</dd></div>
+              <div><dt class="font-semibold" data-i18n="info_contact">Contact</dt><dd>Peter Ao, Managing Director</dd></div>
+              <div><dt class="font-semibold">Tel</dt><dd><a class="text-blue-600 underline" href="tel:+6588649858">+65-8864 9858</a></dd></div>
+              <div><dt class="font-semibold">Email</dt><dd><a class="text-blue-600 underline" href="mailto:peter.ao@pipelinkglobal.com">peter.ao@pipelinkglobal.com</a></dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-10 border-t">
+    <div class="container px-6 text-sm text-gray-600 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="images/pipelink-icon.png" alt="" class="w-6 h-6 rounded" />
+        <span>&copy; <span id="year"></span> Pipelink Global Trading Pte. Ltd.</span>
+      </div>
+      <a href="#top" class="px-3 py-1 rounded-lg border hover:bg-gray-50">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <!-- Search overlay -->
+  <div id="searchOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="container px-6 pt-24">
+      <div class="mx-auto max-w-2xl search-panel">
+        <div class="search-row">
+          <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke-width="2"></circle><path d="M21 21l-3.5-3.5" stroke-width="2" stroke-linecap="round"></path></svg>
+          <input id="siteSearch" class="search-input" placeholder="Search sections, topics, terms." aria-label="Search" />
+          <button id="closeSearch" type="button" class="px-2 py-1 text-sm rounded bg-gray-100 hover:bg-gray-200" aria-label="Close search">Close</button>
+        </div>
+        <div id="searchResults" class="search-results max-h-80 overflow-auto divide-y"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // ===== Utility =====
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+  // ===== Footer year =====
+  const y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  // ===== Mobile menu =====
+  const mobileBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileBack = document.getElementById('mobileMenuBack');
+  function toggleMobile(open){
+    const show = open ?? mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden', !show);
+    mobileMenu.setAttribute('aria-hidden', String(!show));
+    if (mobileBtn) mobileBtn.setAttribute('aria-expanded', String(show));
+    document.body.classList.toggle('overflow-hidden', show);
+  }
+  mobileBtn && mobileBtn.addEventListener('click', ()=> toggleMobile());
+  mobileBack && mobileBack.addEventListener('click', ()=> toggleMobile(false));
+
+  // ===== Smooth anchors =====
+  const header = document.getElementById('siteHeader');
+  const HEADER_OFFSET = () => header ? header.offsetHeight + 8 : 0;
+  function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function smoothScrollTo(targetY, duration = 800){
+    const startY = window.scrollY; const dist = targetY - startY; const start = performance.now();
+    function step(now){ const t=Math.min(1,(now-start)/duration); window.scrollTo(0,startY+dist*easeInOutCubic(t)); if(t<1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  $$('a[href^="#"]').forEach(a=>{
+    const id = a.getAttribute('href'); if(id === '#') return;
+    a.addEventListener('click', e=>{
+      const el = document.querySelector(id); if(!el) return;
+      e.preventDefault();
+      const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET();
+      smoothScrollTo(top, 850);
+      history.pushState(null, '', id);
+      toggleMobile(false);
+    });
+  });
+
+  // ===== Header on hero =====
+  const sentinel = document.getElementById('hero-sentinel');
+  function setHeader(inHero){
+    if(!header) return;
+    header.classList.toggle('on-hero', inHero);
+    header.classList.toggle('scrolled', !inHero);
+  }
+  if('IntersectionObserver' in window && sentinel){
+    const ioHeader = new IntersectionObserver(es=> es.forEach(e=> setHeader(e.isIntersecting)), { rootMargin:`-${HEADER_OFFSET()}px 0px 0px 0px`, threshold:0 });
+    ioHeader.observe(sentinel);
+  } else { header && header.classList.add('scrolled'); }
+
+  // ===== Search overlay =====
+  const overlay = document.getElementById('searchOverlay');
+  const openBtn = document.getElementById('openSearch');
+  const closeBtn = document.getElementById('closeSearch');
+  const input = document.getElementById('siteSearch');
+  const results = document.getElementById('searchResults');
+
+  // Site-wide static index (keep lowercase paths)
+  const SITE_INDEX = [
+    { href:'index.html#who',         title:'Home – Who We Are',        text:'Overview and capabilities' },
+    { href:'index.html#capabilities',title:'Home – Capabilities',      text:'Stats and highlights' },
+    { href:'index.html#featured',    title:'Home – Featured Products', text:'PL6/PL8, linepipe, OCTG' },
+    { href:'about.html#about',       title:'About – Our Story',        text:'Company background and what we do' },
+    { href:'about.html#locations',   title:'About – Our Location',     text:'Global coverage and markers' },
+    { href:'about.html#value',       title:'About – Our Value',        text:'Strategic value proposition' },
+    { href:'about.html#identity',    title:'About – Our Identity',     text:'Identity and positioning' },
+    { href:'engineering.html#segments', title:'Engineering – Business', text:'Business segments' },
+    { href:'engineering.html#products', title:'Engineering – Our Products', text:'PL6/PL8, linepipe, OCTG, stainless, mechanical' },
+    { href:'services.html#solutions',   title:'Services',              text:'End-to-end offerings' },
+    { href:'contact.html#contact',      title:'Contact',               text:'Contact form and details' }
+  ];
+
+  function pageIndex(){
+    return $$('section[id]').map(sec=>{
+      const heading = sec.querySelector('h2, h3');
+      const title = (heading ? heading.textContent : sec.id || '').trim();
+      const text = (sec.innerText || '').replace(/\s+/g,' ').trim();
+      return { href:'#'+sec.id, title, text };
+    });
+  }
+
+  function buildIndex(){
+    return SITE_INDEX.concat(pageIndex());
+  }
+
+  function getExcerpt(text, q, span = 120){
+    if(!q) return text.slice(0, span) + (text.length > span ? '…' : '');
+    const t = text.toLowerCase();
+    const i = t.indexOf(q.toLowerCase());
+    if(i < 0) return text.slice(0, span) + (text.length > span ? '…' : '');
+    const start = Math.max(0, i - Math.floor(span/2));
+    const end = Math.min(text.length, i + q.length + Math.floor(span/2));
+    return (start>0?'…':'') + text.slice(start, end) + (end<text.length?'…':'');
+  }
+
+  function escapeHTML(s){
+    return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function highlight(html, q){
+    if(!q) return escapeHTML(html);
+    const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','ig');
+    return escapeHTML(html).replace(re, '<span class="bg-yellow-200">$1</span>');
+  }
+
+  function renderResults(list, q){
+    if(!results) return;
+    if(!list.length){
+      results.innerHTML = `<div class="p-4 text-sm text-gray-500">No results</div>`;
+      return;
+    }
+    results.innerHTML = list.slice(0, 12).map(m=>{
+      const title = highlight(m.title, q);
+      const snippet = highlight(getExcerpt(m.text || '', q), q);
+      return `
+        <a class="block px-4 py-3 hover:bg-gray-50" href="${m.href}">
+          <div class="text-sm font-semibold">${title}</div>
+          <div class="text-xs text-gray-600">${snippet}</div>
+        </a>`;
+    }).join('');
+    // Close overlay when a result is clicked
+    results.querySelectorAll('a').forEach(a=>{
+      a.addEventListener('click', ()=> closeSearch());
+    });
+  }
+
+  let INDEX_CACHE = buildIndex();
+
+  function openSearch(){
+    if(!overlay) return;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+    if (openBtn) openBtn.setAttribute('aria-expanded','true');
+    INDEX_CACHE = buildIndex(); // refresh page sections
+    renderResults(INDEX_CACHE, ''); // show some quick links
+    setTimeout(()=> input && input.focus(), 20);
+  }
+  function closeSearch(){
+    if(!overlay) return;
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+    if (openBtn) openBtn.setAttribute('aria-expanded','false');
+  }
+
+  openBtn && openBtn.addEventListener('click', openSearch);
+  closeBtn && closeBtn.addEventListener('click', closeSearch);
+  overlay && overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeSearch(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && overlay.classList.contains('open')) closeSearch(); });
+
+  // Live search (debounced)
+  let tId;
+  input && input.addEventListener('input', ()=>{
+    if(!results) return;
+    clearTimeout(tId);
+    tId = setTimeout(()=>{
+      const q = (input.value || '').trim();
+      const list = INDEX_CACHE.filter(it =>
+        it.title.toLowerCase().includes(q.toLowerCase()) ||
+        it.text.toLowerCase().includes(q.toLowerCase())
+      );
+      renderResults(list, q);
+    }, 80);
+  });
+
+  // Optional: keyboard shortcut Cmd/Ctrl+K to open
+  document.addEventListener('keydown', (e)=>{
+    const isMac = navigator.platform.toUpperCase().includes('MAC');
+    if ((isMac && e.metaKey && e.key.toLowerCase() === 'k') || (!isMac && e.ctrlKey && e.key.toLowerCase() === 'k')) {
+      e.preventDefault(); openSearch();
+    }
+  });
+
+  // ===== Reveal on scroll (auto-apply) =====
+  const REVEAL_SELECTOR = [
+    '[data-reveal]', '.reveal', '.card', 'section h2', 'section h3', 'section p', 'section li', 'section table', 'section dl', 'section dt', 'section dd'
+  ].join(',');
+  const revealTargets = $$(REVEAL_SELECTOR).filter(el => !el.closest('#searchOverlay'));
+  revealTargets.forEach((el, idx) => { el.classList.add('reveal'); el.style.transitionDelay = ((idx % 12) * 30) + 'ms'; });
+  if ('IntersectionObserver' in window){
+    const ioReveal = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('show'); ioReveal.unobserve(e.target); } });
+    }, { rootMargin:'0px 0px -10% 0px', threshold:0.1 });
+    revealTargets.forEach(el => ioReveal.observe(el));
+  } else {
+    revealTargets.forEach(el => el.classList.add('show'));
+  }
+
+                // ===== Map pins (simple labels) ===== delete to use
+                //const LOCATIONS = [
+                //  { name:'Headquarters – Singapore', left:84.6, top:62.5, type:'hq' },
+                //  { name: 'Europe',                  left:54.5, top:38.0 },
+                //  { name:'South America',            left:38.0, top:69.5 },
+                //  { name:'Asia',                     left:80.0, top:46 },
+                //  { name:'East Africa',              left:60.0, top:48.6 },
+                //  { name:'North America',            left:23.5, top:34.0 },
+                //];
+  const pins = document.getElementById('pins');
+  // Keep overlay aligned to the rendered image area so markers stay accurate on any screen size
+  function syncPinsOverlayToImage(){
+    const wrap = document.getElementById('mapWrap');
+    const img  = document.getElementById('worldMap');
+    if(!wrap || !img || !pins) return;
+    const wrapRect = wrap.getBoundingClientRect();
+    const imgRect  = img.getBoundingClientRect();
+    const left = Math.max(0, imgRect.left - wrapRect.left);
+    const top  = Math.max(0, imgRect.top  - wrapRect.top);
+    pins.style.position = 'absolute';
+    pins.style.left = left + 'px';
+    pins.style.top  = top  + 'px';
+    pins.style.width  = imgRect.width + 'px';
+    pins.style.height = imgRect.height + 'px';
+    // Clear bottom/right from the CSS inset so dimensions come from width/height
+    pins.style.right = 'auto';
+    pins.style.bottom = 'auto';
+  }
+  window.addEventListener('load', syncPinsOverlayToImage);
+  window.addEventListener('resize', syncPinsOverlayToImage);
+  if (window.ResizeObserver){
+    const ro = new ResizeObserver(()=> syncPinsOverlayToImage());
+    const imgEl = document.getElementById('worldMap');
+    imgEl && ro.observe(imgEl);
+  }
+  if(pins){
+    pins.innerHTML='';
+    const frag = document.createDocumentFragment();
+    LOCATIONS.forEach(loc=>{
+      const m = document.createElement('div');
+      m.className = 'marker'; if(loc.type) m.dataset.type = loc.type;
+      m.style.left = loc.left + '%'; m.style.top = loc.top + '%';
+      const d = document.createElement('span'); d.className = 'dot';
+      const t = document.createElement('span'); t.className = 'text'; t.textContent = loc.name;
+      m.appendChild(d); m.appendChild(t);
+      frag.appendChild(m);
+    });
+    pins.appendChild(frag);
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
